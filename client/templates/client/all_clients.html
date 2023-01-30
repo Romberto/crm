@@ -1,0 +1,26 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'client/css/client.css'%}">
+{% endblock %}
+{% block title%} мои клиенты {% endblock %}
+{% block content %}
+    <div class="client">
+        {% if clients %}
+        <ul class="client__list">
+            {% for client in clients%}
+            <li class="client__item">
+                <a class="client__link" href="{% url 'detail_client' client.id%}">
+                    <p>{{client.name}} {{client.face_contact}} {{client.phone}}</p>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="client__not_client">у вас нет зарегистрированных клиентов</p>
+        {% endif %}
+
+    </div>
+
+
+{% endblock %}

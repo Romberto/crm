@@ -1,0 +1,24 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'product/css/product.css'%}">
+{% endblock %}
+{% block title%} добавить клиента {% endblock %}
+{% block content %}
+<div class="product">
+    {% if request.user.profile.position == 'DR' %}
+    <span class="line"></span>
+    <form class="product__group_form" method="post" action="#" enctype="multipart/form-data">
+        {% csrf_token%}
+        {{form.as_p}}
+        <input type="submit" value="добавить продукт" name="product__group">
+    </form>
+    {% else %}
+    <p class="product__text">группы для товаров может создавать только пользователь с позицией директор</p>
+
+    {% endif %}
+
+</div>
+
+
+{% endblock %}

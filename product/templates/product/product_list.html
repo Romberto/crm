@@ -1,0 +1,52 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'product/css/product.css'%}">
+{% endblock %}
+{% block title%} список продукции {% endblock %}
+{% block content %}
+<div class="product">
+    <h1 class="main_title">Товары группы {{group_title}}</h1>
+    {% if request.user.profile.position == 'DR' or request.user.profile.position == 'MD'%}
+    <a class="btn_add_group js_add_group" href="{% url 'add_product' %}">добавить товар</a>
+    <span class="line"></span>
+    {% if products %}
+    <ul class="product__group_list">
+        {% for product in products %}
+        <li class="product__group_item">
+            <a class="product__group_item_link" href="{% url 'product_item' product.id%}">
+                <p class="product__name">{{product.product_name}}</p>
+                <p class="product_article">{{product.article}}</p>
+            </a>
+            <a class="product__group_edit js_edit_product" href="#" data-value="{{product.id}}">
+                <img src="{% static 'product/img/pen.svg'%}" class="product__group_img" alt="карандаш"
+                     title="Поменять название продукта"/>
+            </a>
+            <a class="product__group_delete js_delete_product" href="#" data-value="{{product.id}}">
+                <img src="{% static 'product/img/cart.svg'%}" class="product__group_img" alt="корзина"
+                     title="Удалить продукт"/>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% else%}
+    {% if products %}
+    <ul class="product__group_list">
+        {% for product in products %}
+        <li class="product__group_item">
+            <a class="product__group_item_link" href="{% url 'product_item' product.id%}">
+                <p class="product__name">{{product.product_name}}</p>
+                <p class="product_article">{{product.article}}</p>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="{% static 'product/js/product.js' %}"></script>
+{% endblock %}

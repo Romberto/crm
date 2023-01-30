@@ -1,0 +1,11 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'client/css/client.css'%}">
+{% endblock %}
+{% block title%} клиетн {% endblock %}
+{% block content %}
+<div class="client">
+  <p class="client_none">клиетна с такими данными не найдено</p>
+</div>
+{% endblock %}

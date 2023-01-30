@@ -1,0 +1,17 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'client/css/client.css'%}">
+{% endblock %}
+{% block title%} добавить клиента {% endblock %}
+{% block content %}
+    <div class="client">
+    <form class="client__form" method="post" action="#">
+        {% csrf_token%}
+        {{form.as_p}}
+        <input type="submit" value="создать" name="client">
+    </form>
+    </div>
+
+
+{% endblock %}

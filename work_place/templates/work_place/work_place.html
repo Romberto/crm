@@ -1,0 +1,16 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'work_place/css/work_place.css'%}">
+{% endblock %}
+{% block title%} личный кабинет {% endblock %}
+{% block content %}
+{% if request.user.profile %}
+<div class="work_place">
+
+</div>
+{% else %}
+<p class="main__text">у пользователя не назначена позиция обратитесь к директору или администратору.</p>
+{% endif %}
+{% endblock %}
+

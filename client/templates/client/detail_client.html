@@ -1,0 +1,20 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'client/css/client.css'%}">
+{% endblock %}
+{% block title%} клиетн {% endblock %}
+{% block content %}
+<div class="client">
+    {% if client %}
+    <form class="client__form" method="post" action="#">
+        {% csrf_token%}
+        {{form_client.as_p}}
+        <input type="submit" value="изменить" name="client">
+        <a href="{% url 'delete_client' client.id %}">удалить</a>
+    </form>
+    {% else %}
+    <p class="client_none">клиетна с такими данными не найдено</p>
+    {% endif %}
+</div>
+{% endblock %}

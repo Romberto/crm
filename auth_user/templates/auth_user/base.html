@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'auth_user/css/normilize.css'%}">
+    <link rel="stylesheet" href="{% static 'auth_user/css/main.css'%}">
+    {% block css %}
+
+    {% endblock %}
+    <title>{% block title %} мой сайт {% endblock%}</title>
+</head>
+<body>
+    <div class="container">
+{{request.user.username}}
+        <menu class="menu">
+            <a class="menu__link" href="{% url 'all_clients' %}">клиенты</a>
+            <a class="menu__link" href="{% url 'products' %}">продукция</a>
+        </menu>
+        {% block content %}
+
+        {% endblock %}
+
+    </div>
+<script type="text/javascript" src="{% static 'auth_user/js/jq_3.6.3_min.js' %}"></script>
+<!--    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
+    {% block js %}
+
+    {% endblock %}
+
+
+
+</body>
+</html>

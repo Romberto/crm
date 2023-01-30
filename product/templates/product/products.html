@@ -1,0 +1,69 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'product/css/product.css'%}">
+{% endblock %}
+{% block title%} группы товаров {% endblock %}
+{% block content %}
+<div class="product">
+    <h1 class="main_title">Группы товаров</h1>
+    {% if request.user.profile.position == 'DR' %}
+    <a class="btn_add_group js_add_group" href="{% url 'add_product_group' %}">добавить группу для товаров</a>
+    <span class="line"></span>
+    {% if groups %}
+    <ul class="product__group_list">
+        {% for group in groups %}
+        <li class="product__group_item">
+            <a class="product__group_link" href="{% url 'product_group_list' group.id %}" id="droup_{{group.id}}">{{group.group_title}}</a>
+            <a class="product__group_edit js_edit_group" href="#" data-value="{{group.id}}">
+                <img src="{% static 'product/img/pen.svg'%}" class="product__group_img" alt="карандаш" title="Поменять название группы"/>
+            </a>
+            <a class="product__group_delete js_delete_group" href="#" data-value="{{group.id}}">
+                <img src="{% static 'product/img/cart.svg'%}" class="product__group_img" alt="корзина" title="Удалить группу"/>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="popup_edit_group">
+        <p class="popup__title">изменить название группы</p>
+        <div class="form-group">
+            <input type="text" class="popup__input" id="popup_edit">
+            <a href="#" class="btn" id="popup__btn">изменить </a>
+            <p class="popup_erorrs"></p>
+        </div>
+    </div>
+    <div class="popup_delete_group group_delete_red">
+        <p class="popup__title dalete_red_text">удалить группу товаров ?</p>
+        <p id="name_group"></p>
+        <div class="group__btn_delete_list">
+            <a href="#" class="btn_del" id="popup__btn_delete_yes">да</a>
+            <a href="#" class="btn_del" id="popup__btn_delete_no">нет</a>
+
+        </div>
+        <p class="popup_erorrs"></p>
+    </div>
+    {% else %}
+    <p class="product__text">не созданно ни одой группы товаров</p>
+    {% endif %}
+
+    {% else %}
+    <span class="line"></span>
+    {% if groups %}
+    <ul class="product__group_list">
+        {% for group in groups %}
+        <li class="product__group_item">
+            <a class="product__group_link" href="{% url 'product_group_list' group.id %}">{{group.group_title}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="product__text">не созданно ни одой группы товаров</p>
+    {% endif %}
+    {% endif %}
+</div>
+
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="{% static 'product/js/product.js' %}"></script>
+{% endblock %}

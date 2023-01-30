@@ -1,0 +1,129 @@
+.popup_delete_group,
+.popup_edit_group{
+    width: 300px;
+    height: 100px;
+    border: 2px solid var(--blue);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+
+.product{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+.popup__title{
+    color: var(--white);
+    background: var(--blue);
+    height: 30px;
+    width: 100%;
+    text-align: center;
+    padding-top: 8px;
+    margin-bottom: 20px;
+}
+
+.popup_erorrs{
+    color: var(--red);
+
+}
+
+.group_delete_red{
+    border: 2px solid var(--red);
+}
+.dalete_red_text{
+    background: var(--red);
+    margin-bottom: 0px;
+}
+
+.group__btn_delete_list{
+    width:100%;
+    display:flex;
+    justify-content: space-around;
+}
+
+.btn_del{
+    width: 40px;
+    height: 30px;
+    border: 2px solid var(--red);
+    border-radius: 5px;
+    text-align: center;
+    padding-top: 3px;
+}
+
+#name_group{
+    width: 100%;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.btn_add_group{
+    border: 2px solid var(--black);
+    width: 270px;
+    height: 40px;
+    text-align:center;
+    padding-top: 5px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 20px;
+    color: var(--white);
+    background: var(--blue);
+    font-size: 20px;
+}
+
+.product__group_list{
+    display: flex;
+
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+
+.product__group_item{
+    display: flex;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.product__group_link{
+    border: 3px solid var(--blue);
+    border-radius: 5px;
+    width:300px;
+    height: 60px;
+    font-size: 20px;
+    text-align: center;
+    display: block;
+    margin-right: 30px;
+    padding-top: 6px;
+}
+
+
+.product__group_img{
+    width: 100%;
+    height: 100%;
+}
+
+/* форма добавления */
+
+.product__group_form p {
+    margin-bottom: 5px;
+
+}
+
+.product__group_form p label{
+    width: 150px;
+    display: inline-block;
+}
+
+.product__group_item_link{
+    margin-right: 30px;
+    width: 430px;
+    display: inline-block;
+    border-bottom: 2px solid var(--blue);
+    padding-bottom:3px;
+}
