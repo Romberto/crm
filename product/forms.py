@@ -28,11 +28,3 @@ class ProductForm(ModelForm):
             'specification': forms.FileInput(),
             'quality_certificate': forms.FileInput()
         }
-
-
-    def clean(self):
-        cleaned_data = super().clean()
-        product_group = cleaned_data['product_group']
-        if not product_group:
-            msg = "укажите группу товаров"
-            self.add_error('phone', msg)

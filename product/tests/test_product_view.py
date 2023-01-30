@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from product.models import GroupProductModel
+from product.forms import ProductForm
+from product.models import GroupProductModel, ProductModel
 from users.models import Profile
 import json
 
@@ -197,3 +198,65 @@ class TestAjaxProductDelete(TestCase):
         response = self.client.get(url)
         self.assertEqual(json.loads(response.content), expend_data)
         self.assertEqual(GroupProductModel.objects.count(), 0)
+
+class TestProductItem(TestCase):
+
+    def setUp(self) -> None:
+        self.user = User.objects.create(
+            username = 'testuser',
+            password = 'TestPass'
+        )
+        self.admin = User.objects.create(
+            username='testAdmin',
+            password='TestPass'
+        )
+
+        self.groupe = GroupProductModel.objects.create(
+            group_title = 'ZMJ'
+        )
+
+        self.product = ProductModel.objects.create(
+            article = '33100',
+            product_name = 'провансаль',
+            product_group = self.groupe
+        )
+
+    def test_product_list_view_ok(self):
+        url = reverse('product_group_list', kwargs={'id': self.groupe.id})
+        self.client.force_login(self.user)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'product/product_list.html')
+
+    def test_product_list_view_no_auth(self):
+        url = reverse('product_group_list', kwargs={'id': self.groupe.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
+
+    def test_add_product_view(self):
+        url = reverse('add_product')
+        self.client.force_login(self.user)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'product/product_add.html')
+
+    def test_add_product_view_no_auth(self):
+        url = reverse('add_product')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
+
+    def test_add_product_view_post(self):
+        data = {
+            'article': '33500',
+            'product_name': 'провансаль',
+            'product_group': self.groupe.id
+        }
+        self.client.force_login(self.user)
+        url = reverse('add_product')
+        response = self.client.post(url, data=data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        count_product = ProductModel.objects.count()
+        self.assertEqual(count_product, 2)
+

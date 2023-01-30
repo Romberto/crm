@@ -1,0 +1,17 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'product/css/product.css'%}">
+{% endblock %}
+{% block title%}Продукт{% endblock %}
+{% block content %}
+<div class="product">
+    <h1 class="main_title">{{product.article}}</h1>
+
+</div>
+
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="{% static 'product/js/product.js' %}"></script>
+{% endblock %}

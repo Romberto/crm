@@ -46,7 +46,7 @@ class AddProductGroup(View):
 
 
 class ProductListView(View):
-
+# показывает продукты определённой группы
     @auth_decoration
     def get(self, request, id):
         products = ProductModel.objects.filter(product_group_id=id).values('id', 'article', 'product_name')

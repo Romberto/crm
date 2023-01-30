@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from product.forms import ProductGroupForm
+from product.forms import ProductGroupForm, ProductForm
 from product.models import GroupProductModel
 
 
@@ -24,4 +24,45 @@ class ProductGroupFormTestView(TestCase):
             'group_title': "СОЛ-ПРО змж"
         }
         form = ProductGroupForm(data=data)
+        self.assertFalse(form.is_valid())
+
+class TestProductItemForm(TestCase):
+
+    def setUp(self) -> None:
+        self.groupe = GroupProductModel.objects.create(
+            group_title = 'майонезы'
+        )
+
+
+    def test_product_item_form_ok(self):
+        data = {
+            'article' : '33100',
+            'product_name' : 'провансаль',
+            'product_group' : self.groupe.id
+        }
+        form = ProductForm(data=data)
+        self.assertTrue(form.is_valid())
+
+    def test_product_item_form_no_art(self):
+        data = {
+            'product_name' : 'провансаль',
+            'product_group' : self.groupe.id
+        }
+        form = ProductForm(data=data)
+        self.assertFalse(form.is_valid())
+
+    def test_product_item_form_no_name(self):
+        data = {
+            'article' : '33100',
+            'product_group' : self.groupe.id
+        }
+        form = ProductForm(data=data)
+        self.assertFalse(form.is_valid())
+
+    def test_product_item_form_no_group(self):
+        data = {
+            'article' : '33100',
+            'product_name' : 'провансаль',
+        }
+        form = ProductForm(data=data)
         self.assertFalse(form.is_valid())
