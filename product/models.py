@@ -45,7 +45,7 @@ class ProductPackagingModel(models.Model):
     packing = models.CharField(max_length=255, default='ящик из гофрированного картона',
                                verbose_name='упаковка')  # упаковка
     netto = models.DecimalField( max_digits=8,decimal_places = 2,
-        verbose_name='нетто масса товара в одной единице упаковки')  # нетто масса товара в одной единице упаковки
+        verbose_name='нетто масса товара в одной коробке')  # нетто масса товара в одной единице упаковки
     brutto = models.DecimalField(max_digits=8,decimal_places = 2,
         verbose_name='брутто масса одной коробки с товаром')  # брутто масса одной коробки с товаром
     quantity_box = models.PositiveIntegerField(

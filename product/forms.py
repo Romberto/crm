@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 
-from product.models import GroupProductModel, ProductModel
+from product.models import GroupProductModel, ProductModel, ProductPackagingModel
 
 
 class ProductGroupForm(ModelForm):
@@ -28,3 +28,15 @@ class ProductForm(ModelForm):
             'quality_certificate': forms.FileInput(),
             'price':forms.NumberInput()
         }
+
+class ProductPackingForm(forms.ModelForm):
+    class Meta:
+        model = ProductPackagingModel
+        fields = ('packing', 'netto', 'brutto', 'quantity_box',)
+        widgets = {
+            'packing': forms.TextInput(),
+            'netto': forms.NumberInput(),
+            'brutto':forms.NumberInput(),
+            'quantity_box': forms.NumberInput()
+        }
+
