@@ -7,6 +7,50 @@
 {% block content %}
 <div class="product">
     <h1 class="main_title">{{product.article}}</h1>
+    <ul class="product__item_list">
+        <li class="product__item_item">{{product.product_name}}</li>
+        <li class="product__item_item">{{product.product_group__group_title}}</li>
+        {% if product.declaration %}
+        <li class="product__item_item">
+            {% if product.declaration|slice:"-3:" == "pdf" %}
+            <a href="{% get_media_prefix %}{{product.declaration}}" target="_blank"
+               class="pdf__icon item__doc_link js_item__doc_link1">декларация pdf</a>
+            {% else %}
+            <a href="{% get_media_prefix %}{{product.declaration}}" class="image__icon item__doc_link js_item__doc_link" target="_blank">декларация</a>
+            {% endif%}
+        </li>
+        {% endif %}
+        {% if product.protocol %}
+        <li class="product__item_item">
+            {% if product.protocol|slice:"-3:" == "pdf" %}
+            <a href="{% get_media_prefix %}{{product.protocol}}" target="_blank"
+               class="pdf__icon item__doc_link js_item__doc_link1">протокол pdf</a>
+            {% else %}
+            <a href="{% get_media_prefix %}{{product.protocol}}" class="image__icon item__doc_link js_item__doc_link" target="_blank">протокол</a>
+            {% endif%}
+        </li>
+        {% endif %}
+        {% if product.specification %}
+        <li class="product__item_item">
+            {% if product.specification|slice:"-3:" == "pdf" %}
+            <a href="{% get_media_prefix %}{{product.specification}}" target="_blank"
+               class="pdf__icon item__doc_link js_item__doc_link1">спецификация сделки pdf</a>
+            {% else %}
+            <a href="{% get_media_prefix %}{{product.specification}}" class="image__icon item__doc_link js_item__doc_link" target="_blank">спецификация сделки</a>
+            {% endif%}
+        </li>
+        {% endif %}
+        {% if product.quality_certificate %}
+        <li class="product__item_item">
+            {% if product.quality_certificate|slice:"-3:" == "pdf" %}
+            <a href="{% get_media_prefix %}{{product.quality_certificate}}" target="_blank"
+               class="pdf__icon item__doc_link js_item__doc_link1">сертификат качества pdf</a>
+            {% else %}
+            <a href="{% get_media_prefix %}{{product.quality_certificate}}" class="image__icon item__doc_link js_item__doc_link" target="_blank">сертификат качества</a>
+            {% endif%}
+        </li>
+        {% endif %}
+    </ul>
 
 </div>
 

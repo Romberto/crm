@@ -6,12 +6,20 @@ from django.urls import reverse
 
 from client.forms import ClientForm
 from client.models import ClientModel
+from users.models import Profile
 
 
 class ClientTestForm(TestCase):
 
     def setUp(self) -> None:
         self.user1 = User.objects.create(username='test1', password="Test9812")
+
+        self.profile = Profile.objects.create(
+            user=self.user1,
+            position='DR',
+            phone='=79030320405'
+
+        )
 
 
     def test_add_form_valid(self):
@@ -44,13 +52,13 @@ class ClientTestForm(TestCase):
 
     def test_add_form_no_valid_phone(self):
 
-        data = {'owner_manager': self.user1.id, 'name':'testClien', 'phone': '8379035485215'}
+        data = {'owner_manager': self.user1.id, 'name':'testClien', 'phone': '89030251212'}
         form = ClientForm(data)
         self.assertFalse(form.is_valid())
         url = reverse('add_client')
         self.client.force_login(User.objects.get_or_create(username='test1')[0])
         response = self.client.post(url, data=data, follow=True)
-        self.assertFormError(response ,'form','phone','не корректный номер телефона')
+        self.assertFormError(response ,'form','phone','запишите номер телефона через +7')
         self.assertEqual(response.status_code,200)
 
     def test_add_form_no_valid_inn(self):

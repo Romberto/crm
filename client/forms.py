@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from .models import ClientModel
 
@@ -10,6 +12,7 @@ class ClientForm(forms.ModelForm):
                   'jurist_address', 'site', 'mail'
             , 'activity', 'agreement']
 
+
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
         self.fields['name'].label = "название юр лица"
@@ -17,12 +20,15 @@ class ClientForm(forms.ModelForm):
 
         self.fields['phone'].label = "телефон"
         self.fields['phone'].widget.attrs['class'] = 'client__form_input'
+        self.fields['phone'].widget.attrs['placeholder'] = '+79994443322'
 
         self.fields['phone2'].label = "телефон №2"
         self.fields['phone2'].widget.attrs['class'] = 'client__form_input'
+        self.fields['phone2'].widget.attrs['placeholder'] = '+79994443322'
 
         self.fields['phone3'].label = "телефон №3"
         self.fields['phone3'].widget.attrs['class'] = 'client__form_input'
+        self.fields['phone3'].widget.attrs['placeholder'] = '+79994443322'
 
         self.fields['mail'].label = "почта"
         self.fields['mail'].widget.attrs['class'] = 'client__form_input'
@@ -57,19 +63,31 @@ class ClientForm(forms.ModelForm):
         phone2 = cleaned_data.get('phone2')
         phone3 = cleaned_data.get('phone3')
         inn = cleaned_data.get('inn')
+        pattern = re.compile('^\+7\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')
         if phone:
+            if not pattern.search(phone):
+                msg = "запишите номер телефона через +7"
+                self.add_error('phone', msg)
+            elif len(phone) > 12:
 
-            if len(phone) > 12:
-                msg = "не корректный номер телефона"
+                msg = "слишком длинный номер телефона"
                 self.add_error('phone', msg)
+
+
         if phone2:
-            if len(phone2) > 12:
-                msg = "не корректный номер телефона"
-                self.add_error('phone', msg)
+            if not pattern.search(phone2):
+                msg = "запишите номер телефона через +7"
+                self.add_error('phone2', msg)
+            elif len(phone2) > 12:
+                msg = "слишком длинный номер телефона"
+                self.add_error('phone2', msg)
         if phone3:
-            if len(phone3) > 12:
-                msg = "не корректный номер телефона"
-                self.add_error('phone', msg)
+            if not pattern.search(phone3):
+                msg = "запишите номер телефона через +7"
+                self.add_error('phone3', msg)
+            elif len(phone3) > 12:
+                msg = "слишком длинный номер телефона"
+                self.add_error('phone3', msg)
         if inn:
             if len(inn) != 12:
                 msg = "не коректный ИНН"

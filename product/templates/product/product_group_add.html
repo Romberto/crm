@@ -6,11 +6,13 @@
 {% block title%} добавить клиента {% endblock %}
 {% block content %}
 <div class="product">
+    <span class="line"></span>
+    <a class="btn_add_group" href="{% url 'products' %}">назад</a>
     {% if request.user.profile.position == 'DR' %}
     <form class="product__group_form" method="post" action="#">
         {% csrf_token%}
         {{form.as_p}}
-        <input type="submit" value="добавить группу" name="product__group">
+        <input type="submit" value="добавить группу" name="product__group" class="form__btn_action">
     </form>
     {% else %}
     <p class="product__text">группы для товаров может создавать только пользователь с позицией директор</p>

@@ -3,6 +3,27 @@
     --white: #fff;
     --black: #000000;
     --red: #fa0505;
+    --blue_light:#ace7f2 ;
+    --green_light:#68f7cc ;
+    --orange_light: #ffc757;
+    --yellow:#ffd129 ;
+    --pink: #fd7b7c;
+}
+
+.blue_light{
+    background-color: var(--blue_light);
+}
+
+.green_light{
+    background-color: var(--green_light);
+}
+
+.orange_light{
+    background-color: var(--orange_light);
+}
+
+.yellow{
+    background-color: var(--yellow);
 }
 
 .container{
@@ -58,4 +79,60 @@
     color: var(--blue);
     font-size: 30px;
     text-align: center;
+}
+
+.main__title_18{
+    color: var(--blue);
+    font-size: 18px;
+    text-align: center;
+}
+
+.btn_add_group{
+    border: 2px solid var(--black);
+    width: 270px;
+    height: 40px;
+    text-align:center;
+    padding-top: 5px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 20px;
+    color: var(--white);
+    background: var(--blue);
+    font-size: 20px;
+}
+
+.product__group_form p {
+    margin-bottom: 5px;
+
+}
+
+.product__group_form p label{
+    width: 150px;
+    display: inline-block;
+}
+
+.product__group_item_link{
+    margin-right: 30px;
+    width: 430px;
+    display: inline-block;
+    border-bottom: 2px solid var(--blue);
+    padding-bottom:3px;
+}
+
+.form__btn_action{
+    border: 2px solid var(--black);
+
+    height: 40px;
+    text-align:center;
+    padding: 5px 10px 7px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 20px;
+    color: var(--white);
+    background: var(--blue);
+    font-size: 20px;
+}
+
+.red{
+    background: var(--red);
 }

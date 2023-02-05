@@ -5,22 +5,37 @@
 {% endblock %}
 {% block title%} мои клиенты {% endblock %}
 {% block content %}
-    <div class="client">
-        {% if clients %}
-        <ul class="client__list">
-            {% for client in clients%}
-            <li class="client__item">
-                <a class="client__link" href="{% url 'detail_client' client.id%}">
-                    <p>{{client.name}} {{client.face_contact}} {{client.phone}}</p>
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p class="client__not_client">у вас нет зарегистрированных клиентов</p>
-        {% endif %}
+<div class="client">
+    <h1 class="main_title">Клиенты</h1>
+    <a class="btn_add_group js_add_group" href="{% url 'add_client' %}">добавить клиента</a>
+    <span class="line"></span>
 
-    </div>
+    {% if clients %}
+    <h1 class="main_title">все ваши клиетны</h1>
+    <table class="client__list"  cellpadding="7" cellspacing="7">
+        <tr bgcolor='#b3ffe5'>
+            <td>название компании</td>
+            <td>контакнное лицо</td>
+            <td>телефон</td>
+            <td>телефон2</td>
+            <td>телефон3</td>
+        </tr>
+        {% for client in clients%}
+        <tr class="client__item">
+            <td> <a href="{% url 'detail_client' client.id %}" class="table__link" title="детальная информация о клинте">{{client.name}} </a></td>
+            <td> {{client.face_contact}}</td>
+            <td> <a href="tel:{{client.phone}}" class="table__link">{{client.phone}}</a></td>
+            <td> <a href="tel:{{client.phone2}}" class="table__link">{{client.phone2}}</a></td>
+            <td> <a href="tel:{{client.phone3}}" class="table__link">{{client.phone3}}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p class="main_title">у вас нет зарегистрированных клиентов</p>
+    {% endif %}
+
+
+</div>
 
 
 {% endblock %}

@@ -6,19 +6,75 @@
 {% block title%} список продукции {% endblock %}
 {% block content %}
 <div class="product">
-    <h1 class="main_title">Товары группы {{group_title}}</h1>
+
+    <h1 class="main_title">Товары группы {{product_group_title}}</h1>
     {% if request.user.profile.position == 'DR' or request.user.profile.position == 'MD'%}
-    <a class="btn_add_group js_add_group" href="{% url 'add_product' %}">добавить товар</a>
+    <a class="btn_add_group js_add_group" href="{% url 'add_product' product_groupe_id %}" id="product_{{group.id}}">добавить
+        товар</a>
     <span class="line"></span>
     {% if products %}
     <ul class="product__group_list">
         {% for product in products %}
         <li class="product__group_item">
-            <a class="product__group_item_link" href="{% url 'product_item' product.id%}">
+            <div class="product__group_item_link">
                 <p class="product__name">{{product.product_name}}</p>
-                <p class="product_article">{{product.article}}</p>
-            </a>
-            <a class="product__group_edit js_edit_product" href="#" data-value="{{product.id}}">
+                <p class="product_article" id="product_{{product.id}}">{{product.article}}</p>
+                <p class="product_article">{{product.price}} руб.</p>
+                <ul class="product__document_list">
+                    {% if product.declaration%}
+                    <li class="product__document_item">
+
+                        {% if product.declaration|slice:"-3:" == "pdf" %}
+                        <a href="{% get_media_prefix %}{{product.declaration}}" target="_blank"
+                           class="item__doc_link blue_light" title="декларация">ДК</a>
+                        {% else %}
+                        <a href="{% get_media_prefix %}{{product.declaration}}"
+                           class="item__doc_link blue_light" target="_blank" title="декларация">ДК</a>
+                        {% endif%}
+
+                    </li>
+                    {% endif%}
+                    {% if product.protocol %}
+                    <li class="product__document_item">
+
+                        {% if product.protocol|slice:"-3:" == "pdf" %}
+                        <a href="{% get_media_prefix %}{{product.protocol}}" target="_blank"
+                           class="item__doc_link green_light" title="протокол">ПР</a>
+                        {% else %}
+                        <a href="{% get_media_prefix %}{{product.protocol}}"
+                           class="item__doc_link green_light" target="_blank" title="протокол">ПР</a>
+                        {% endif %}
+
+                    </li>
+                    {% endif %}
+                    {% if product.specification %}
+                    <li class="product__document_item">
+                        {% if product.specification|slice:"-3:" == "pdf" %}
+                        <a href="{% get_media_prefix %}{{product.specification}}" target="_blank"
+                           class="item__doc_link orange_light" title="спецификация продукта">СП</a>
+                        {% else %}
+                        <a href="{% get_media_prefix %}{{product.specification}}"
+                           class="item__doc_link orange_light" target="_blank" title="спецификация продукта">СП</a>
+                        {% endif%}
+                    </li>
+                    {% endif %}
+
+                    {% if product.quality_certificate %}
+                    <li class="product__document_item">
+                        {% if product.quality_certificate|slice:"-3:" == "pdf" %}
+                        <a href="{% get_media_prefix %}{{product.quality_certificate}}" target="_blank"
+                           class="item__doc_link yellow" title="сертификат качества">СК</a>
+                        {% else %}
+                        <a href="{% get_media_prefix %}{{product.quality_certificate}}"
+                           class="item__doc_link yellow" target="_blank" title="сертификат качества">СК</a>
+                        {% endif%}
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+            <a class="product__group_edit js_edit_product" href="{% url 'edit_product' product.id %}"
+               data-value="{{product.id}}">
                 <img src="{% static 'product/img/pen.svg'%}" class="product__group_img" alt="карандаш"
                      title="Поменять название продукта"/>
             </a>
@@ -29,6 +85,16 @@
         </li>
         {% endfor %}
     </ul>
+    <div class="popup_delete_product group_delete_red">
+        <p class="popup__title dalete_red_text">удалить товар ?</p>
+        <p id="name_group"></p>
+        <div class="group__btn_delete_list">
+            <a href="#" class="btn_del" id="popup__btn_product_delete_yes">да</a>
+            <a href="#" class="btn_del" id="popup__btn_product_delete_no">нет</a>
+
+        </div>
+        <p class="popup_erorrs"></p>
+    </div>
     {% endif %}
     {% else%}
     {% if products %}
@@ -38,6 +104,7 @@
             <a class="product__group_item_link" href="{% url 'product_item' product.id%}">
                 <p class="product__name">{{product.product_name}}</p>
                 <p class="product_article">{{product.article}}</p>
+                <p class="product_article">{{product.price}} руб.</p>
             </a>
         </li>
         {% endfor %}

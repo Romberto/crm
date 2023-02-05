@@ -51,7 +51,7 @@ window.addEventListener('load', function(){
 
 // скрыть попап для удаление группы продуктов
         $(document).mouseup(function (e) {
-            var container = $(".popup_delete_group");
+            var container = $(".popup_delete_group, .popup_delete_product");
             if (container.has(e.target).length === 0){
                 container.fadeOut();
             }
@@ -79,5 +79,41 @@ window.addEventListener('load', function(){
 
             })
         })
+
+        // попап удаление продукта
+
+        $('.js_delete_product').on('click', function(e){
+            e.preventDefault()
+            alert('Внимание удаление товара и все документы связанные с ним !')
+            var id = $(this).attr('data-value')
+            $('#popup__btn_product_delete_yes').attr('data-value', id)
+            var article = $('#product_'+id).text()
+            $('#name_group').text(article)
+            $('.popup_delete_product').fadeIn()
+        });
+
+        $('#popup__btn_product_delete_no').on('click', function(e){
+            e.preventDefault()
+            $('.popup_delete_product').fadeOut()
+
+        })
+
+        $('#popup__btn_product_delete_yes').on('click', function(e){
+            e.preventDefault()
+            var id_product = $('#popup__btn_product_delete_yes').attr('data-value')
+            $.ajax({
+                url: '/product/product_delete/',            /* Куда пойдет запрос */
+                method: 'get',                  /* Метод передачи (post или get) */
+                dataType: 'json',               /* Тип данных в ответе (xml, json, script, html). */
+                data: {id: id_product},            /* Параметры передаваемые в запросе. */
+                success: function(response){
+                    if(response.error){
+                        $('.popup_erorrs').html(response.msg)
+                    }else{
+                        location.reload()
+                    }
+                }
+            })
+        });
 
 })

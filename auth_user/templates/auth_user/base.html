@@ -16,6 +16,7 @@
     <div class="container">
 {{request.user.username}}
         <menu class="menu">
+            <a class="menu__link" href="{% url 'work_place' %}">кабинет</a>
             <a class="menu__link" href="{% url 'all_clients' %}">клиенты</a>
             <a class="menu__link" href="{% url 'products' %}">продукция</a>
         </menu>

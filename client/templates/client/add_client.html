@@ -5,13 +5,19 @@
 {% endblock %}
 {% block title%} добавить клиента {% endblock %}
 {% block content %}
-    <div class="client">
-    <form class="client__form" method="post" action="#">
+<div class="client">
+
+    <span class="line"></span>
+    <a class="btn_add_group" href="{% url 'all_clients' %}">назад</a>
+    <form class="product__group_form" method="post" action="#">
         {% csrf_token%}
         {{form.as_p}}
-        <input type="submit" value="создать" name="client">
+        {% if form.error %}
+        {{form.error}}
+        {% endif %}
+        <input type="submit" value="создать" name="client" class="form__btn_action">
     </form>
-    </div>
+</div>
 
 
 {% endblock %}

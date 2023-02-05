@@ -222,27 +222,27 @@ class TestProductItem(TestCase):
         )
 
     def test_product_list_view_ok(self):
-        url = reverse('product_group_list', kwargs={'id': self.groupe.id})
+        url = reverse('product_list', kwargs={'id': self.groupe.id})
         self.client.force_login(self.user)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'product/product_list.html')
 
     def test_product_list_view_no_auth(self):
-        url = reverse('product_group_list', kwargs={'id': self.groupe.id})
+        url = reverse('product_list', kwargs={'id': self.groupe.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
 
     def test_add_product_view(self):
-        url = reverse('add_product')
+        url = reverse('add_product', kwargs={'id': self.groupe.id})
         self.client.force_login(self.user)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'product/product_add.html')
 
     def test_add_product_view_no_auth(self):
-        url = reverse('add_product')
+        url = reverse('add_product', kwargs={'id': self.groupe.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
@@ -254,9 +254,48 @@ class TestProductItem(TestCase):
             'product_group': self.groupe.id
         }
         self.client.force_login(self.user)
-        url = reverse('add_product')
+        url = reverse('add_product', kwargs={'id': self.groupe.id})
         response = self.client.post(url, data=data, follow=True)
         self.assertEqual(response.status_code, 200)
         count_product = ProductModel.objects.count()
         self.assertEqual(count_product, 2)
+
+    def test_edit_product_view_get(self):
+        url = reverse('edit_product', kwargs={'id': self.product.id})
+        self.client.force_login(self.admin)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'product/product_edit.html')
+
+
+    def test_edit_product_view_get_no_auth(self):
+        url = reverse('edit_product', kwargs={'id': self.product.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
+
+    def test_edit_product_view_post(self):
+        url = reverse('edit_product', kwargs={'id': self.product.id})
+        self.client.force_login(self.admin)
+        data = {'article': '33500',
+                'product_name': 'провансаль',
+                'product_group': self.groupe.id
+                }
+        response = self.client.post(url, data=data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '/product/'+str(data['product_group']))
+        self.assertTemplateUsed(response, 'product/product_list.html')
+        product = ProductModel.objects.get(id=self.product.id)
+        self.assertEqual(product.article, '33500')
+
+
+    def test_delete_product_view_ajax(self):
+        expend_data = {'error': False}
+        url = reverse('delete_product')
+        url = url + '?id=' + str(self.product.id)
+        self.client.force_login(self.admin)
+        response = self.client.get(url)
+
+        self.assertEqual(ProductModel.objects.count(), 0)
+        self.assertEqual(json.loads(response.content), expend_data)
 

@@ -8,15 +8,12 @@
 <div class="product">
     {% if request.user.profile.position == 'DR' or request.user.profile.position == 'MD'%}
     <span class="line"></span>
-    <h1 class="main_title">{{group_product}}</h1>
+    <h1 class="main__title_18">изменить {{product.product_name}}</h1>
     <form class="product__group_form" method="post" action="#" enctype="multipart/form-data">
         {% csrf_token%}
         {{form.as_p}}
-        <input type="submit" value="добавить продукт" name="product__group">
+        <input type="submit" value="изменить продукт" name="product__group">
     </form>
-    {% else %}
-    <p class="product__text">группы для товаров может создавать только пользователь с позицией директор</p>
-
     {% endif %}
 
 </div>

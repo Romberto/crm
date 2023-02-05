@@ -21,18 +21,44 @@ def auth_decoration(func):
 class AllClientsView(View):
     @auth_decoration
     def get(self, request):
-        clients = ClientModel.objects.filter(owner_manager=request.user.id).values('id', 'face_contact', 'name',
-                                                                                   'phone').order_by('-id')
-        if clients:
+        if request.user.profile.position != "DR":
+            clients = ClientModel.objects.all().values('id',
+                                                       'face_contact',
+                                                       'name',
+                                                       'phone',
+                                                       'phone2',
+                                                       'phone3',
+                                                       ).order_by(
+                '-id')
+            if clients:
 
-            data = {
-                'clients': clients
-            }
+                data = {
+                    'clients': clients
+                }
+            else:
+                data = {
+                    'clients': None
+                }
+            return render(request, 'client/all_clients.html', data)
         else:
-            data = {
-                'clients': None
-            }
-        return render(request, 'client/all_clients.html', data)
+            clients = ClientModel.objects.filter(owner_manager=request.user.id).values('id',
+                                                                                       'face_contact',
+                                                                                       'name',
+                                                                                       'phone',
+                                                                                       'phone2',
+                                                                                       'phone3',
+                                                                                       ).order_by(
+                '-id')
+            if clients:
+
+                data = {
+                    'clients': clients
+                }
+            else:
+                data = {
+                    'clients': None
+                }
+            return render(request, 'client/all_clients.html', data)
 
 
 # конкретный клиент
@@ -56,16 +82,16 @@ class DetailClientView(View):
     @auth_decoration
     def post(self, request, id_client):
         if 'client' in request.POST:
-            client_model, _ = ClientModel.objects.get_or_create(id=id_client)
+            client_model = ClientModel.objects.get(id=id_client)
             form = ClientForm(request.POST, instance=client_model)
             if form.is_valid():
                 form.save()
+                clients = ClientModel.objects.all().values('id', 'face_contact', 'name',
+                                                           'phone').order_by('-id')
                 data = {
-                    'client': client_model,
-                    'form_client': form
+                    'clients': clients
                 }
-
-                return render(request, "client/detail_client.html", data)
+                return render(request, 'client/all_clients.html', data)
             else:
                 data = {
                     'client': client_model,
@@ -89,17 +115,6 @@ class AddClientView(View):
     def post(self, request):
         form = ClientForm(request.POST)
         if form.is_valid():
-            clients = ClientModel.objects.filter(owner_manager=request.user.id).values('id', 'face_contact', 'name',
-                                                                                       'phone').order_by('-id')
-            if clients:
-
-                data = {
-                    'clients': clients
-                }
-            else:
-                data = {
-                    'clients': None
-                }
             owner_manager = request.user
 
             name = form.cleaned_data['name']
@@ -151,8 +166,11 @@ class AddClientView(View):
                 agreement=agreement,
             )
             new_client.save()
-            return render(request, 'client/all_clients.html', data)
-        return render(request, 'client/add_client.html', {'form': form})
+            return redirect('all_clients')
+
+        else:
+
+            return render(request, 'client/add_client.html', {'form': form})
 
 
 class ClientDeleteView(View):
@@ -163,5 +181,5 @@ class ClientDeleteView(View):
 
             client.delete()
         except ClientModel.DoesNotExist:
-            return render(request,'client/errors_client.html')
+            return render(request, 'client/errors_client.html')
         return redirect('all_clients')

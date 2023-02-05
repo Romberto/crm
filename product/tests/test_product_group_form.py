@@ -59,10 +59,4 @@ class TestProductItemForm(TestCase):
         form = ProductForm(data=data)
         self.assertFalse(form.is_valid())
 
-    def test_product_item_form_no_group(self):
-        data = {
-            'article' : '33100',
-            'product_name' : 'провансаль',
-        }
-        form = ProductForm(data=data)
-        self.assertFalse(form.is_valid())
+

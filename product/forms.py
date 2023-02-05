@@ -18,13 +18,13 @@ class ProductGroupForm(ModelForm):
 class ProductForm(ModelForm):
     class Meta:
         model = ProductModel
-        fields = '__all__'
+        fields = ('article', 'product_name','price','declaration', 'protocol', 'specification', 'quality_certificate')
         widgets = {
             'article': forms.TextInput(attrs={'class': 'input__article', }),
             'product_name': forms.TextInput(attrs={'class': 'input__product_name'}),
-            'product_group': forms.Select(),
             'declaration': forms.FileInput(),
             'protocol': forms.FileInput(),
             'specification': forms.FileInput(),
-            'quality_certificate': forms.FileInput()
+            'quality_certificate': forms.FileInput(),
+            'price':forms.NumberInput()
         }

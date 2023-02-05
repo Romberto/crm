@@ -6,15 +6,22 @@
 {% block title%} клиетн {% endblock %}
 {% block content %}
 <div class="client">
+    <span class="line"></span>
+    <a class="btn_add_group" href="{% url 'all_clients' %}">назад</a>
     {% if client %}
-    <form class="client__form" method="post" action="#">
+    <h1 class="main_title">{{client.name}}</h1>
+    <form class="product__group_form" method="post" action="#">
         {% csrf_token%}
         {{form_client.as_p}}
-        <input type="submit" value="изменить" name="client">
-        <a href="{% url 'delete_client' client.id %}">удалить</a>
+        <input type="submit" value="изменить" name="client" class="form__btn_action">
+        <a href="{% url 'delete_client' client.id %}" class="form__btn_action red js_delete_client">удалить</a>
     </form>
     {% else %}
     <p class="client_none">клиетна с такими данными не найдено</p>
     {% endif %}
 </div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="{% static 'client/js/client.js' %}"></script>
+
 {% endblock %}
