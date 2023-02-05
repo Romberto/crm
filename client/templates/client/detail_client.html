@@ -10,12 +10,18 @@
     <a class="btn_add_group" href="{% url 'all_clients' %}">назад</a>
     {% if client %}
     <h1 class="main_title">{{client.name}}</h1>
-    <form class="product__group_form" method="post" action="#">
-        {% csrf_token%}
-        {{form_client.as_p}}
-        <input type="submit" value="изменить" name="client" class="form__btn_action">
-        <a href="{% url 'delete_client' client.id %}" class="form__btn_action red js_delete_client">удалить</a>
-    </form>
+    <div class="client__detail_list">
+        <form class="product__group_form" method="post" action="#">
+            {% csrf_token%}
+            {{form_client.as_p}}
+            <input type="submit" value="изменить" name="client" class="form__btn_action">
+            <a href="{% url 'delete_client' client.id %}" class="form__btn_action red js_delete_client">удалить</a>
+        </form>
+        <div class="client__block">
+
+        </div>
+    </div>
+
     {% else %}
     <p class="client_none">клиетна с такими данными не найдено</p>
     {% endif %}

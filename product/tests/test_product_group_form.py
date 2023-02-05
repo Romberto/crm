@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from product.forms import ProductGroupForm, ProductForm
+from product.forms import ProductGroupForm, ProductForm, ProductPackingForm
 from product.models import GroupProductModel
 
 
@@ -59,4 +59,28 @@ class TestProductItemForm(TestCase):
         form = ProductForm(data=data)
         self.assertFalse(form.is_valid())
 
+class TestProductPackingForm(TestCase):
+
+    def setUp(self) -> None:
+        pass
+
+    def test_form_packing_product_is_valid(self):
+        data = {'packing_name': 'тарра',
+                'netto': 13.6,
+                'brutto': 14.2,
+                'quantity_box': 40,
+                'packing':True
+                }
+        form = ProductPackingForm(data=data)
+        self.assertTrue(form.is_valid())
+
+    def test_form_packing_product_is_not_valid(self):
+        data = {'packing_name': 'тарра',
+                'netto': 13.6,
+                'brutto': 13,
+                'quantity_box': 40,
+                'packing':True
+                }
+        form = ProductPackingForm(data=data)
+        self.assertFalse(form.is_valid())
 

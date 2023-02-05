@@ -21,6 +21,19 @@
                 <p class="product_article" id="product_{{product.id}}">{{product.article}}</p>
                 <p class="product_article">{{product.price}} руб.</p>
                 <ul class="product__document_list">
+                    {% if product.packing %}
+                    <li class="product__document_item">
+                        <a href="#"
+                           class="item__doc_link green js_packing_edit" title="спецификация груза" data-value="{{product.packing}}">СГ</a>
+                    </li>
+                    {% else %}
+                    <li class="product__document_item">
+                        <a href="#"
+                           class="item__doc_link red js_packing_create" title="спецификация груза отсутствует" data-value="{{product.id}}">СГ</a>
+                    </li>
+                    {% endif %}
+
+
                     {% if product.declaration%}
                     <li class="product__document_item">
 
@@ -76,7 +89,7 @@
             <a class="product__group_edit js_edit_product" href="{% url 'edit_product' product.id %}"
                data-value="{{product.id}}">
                 <img src="{% static 'product/img/pen.svg'%}" class="product__group_img" alt="карандаш"
-                     title="Поменять название продукта"/>
+                     title="Редактировать продукт"/>
             </a>
             <a class="product__group_delete js_delete_product" href="#" data-value="{{product.id}}">
                 <img src="{% static 'product/img/cart.svg'%}" class="product__group_img" alt="корзина"
@@ -101,16 +114,80 @@
     <ul class="product__group_list">
         {% for product in products %}
         <li class="product__group_item">
-            <a class="product__group_item_link" href="{% url 'product_item' product.id%}">
-                <p class="product__name">{{product.product_name}}</p>
-                <p class="product_article">{{product.article}}</p>
-                <p class="product_article">{{product.price}} руб.</p>
-            </a>
+            <div class="product__group_item_link">
+                <p class="product__name"><b>наименование</b> : {{product.product_name}}</p>
+                <p class="product_article"><b>артикул</b> : {{product.article}}</p>
+                <p class="product_article"><b>цена</b> : {{product.price}} руб.</p>
+                <ul class="product__document_list">
+                    {% if product.packing %}
+                    <li class="product__document_item">
+                        <a href="#"
+                           class="item__doc_link green js_packing_edit" title="спецификация груза" data-value="{{product.packing}}">СГ</a>
+                    </li>
+                    {% else %}
+                    <li class="product__document_item">
+                        <a href="#"
+                           class="item__doc_link red js_packing_create" title="спецификация груза отсутствует" data-value="{{product.id}}">СГ</a>
+                    </li>
+                    {% endif %}
+                    {% if product.declaration%}
+                    <li class="product__document_item">
+
+                        {% if product.declaration|slice:"-3:" == "pdf" %}
+                        <a href="{% get_media_prefix %}{{product.declaration}}" target="_blank"
+                           class="item__doc_link blue_light" title="декларация">ДК</a>
+                        {% else %}
+                        <a href="{% get_media_prefix %}{{product.declaration}}"
+                           class="item__doc_link blue_light" target="_blank" title="декларация">ДК</a>
+                        {% endif%}
+
+                    </li>
+                    {% endif%}
+                    {% if product.protocol %}
+                    <li class="product__document_item">
+
+                        {% if product.protocol|slice:"-3:" == "pdf" %}
+                        <a href="{% get_media_prefix %}{{product.protocol}}" target="_blank"
+                           class="item__doc_link green_light" title="протокол">ПР</a>
+                        {% else %}
+                        <a href="{% get_media_prefix %}{{product.protocol}}"
+                           class="item__doc_link green_light" target="_blank" title="протокол">ПР</a>
+                        {% endif %}
+
+                    </li>
+                    {% endif %}
+                    {% if product.specification %}
+                    <li class="product__document_item">
+                        {% if product.specification|slice:"-3:" == "pdf" %}
+                        <a href="{% get_media_prefix %}{{product.specification}}" target="_blank"
+                           class="item__doc_link orange_light" title="спецификация продукта">СП</a>
+                        {% else %}
+                        <a href="{% get_media_prefix %}{{product.specification}}"
+                           class="item__doc_link orange_light" target="_blank" title="спецификация продукта">СП</a>
+                        {% endif%}
+                    </li>
+                    {% endif %}
+
+                    {% if product.quality_certificate %}
+                    <li class="product__document_item">
+                        {% if product.quality_certificate|slice:"-3:" == "pdf" %}
+                        <a href="{% get_media_prefix %}{{product.quality_certificate}}" target="_blank"
+                           class="item__doc_link yellow" title="сертификат качества">СК</a>
+                        {% else %}
+                        <a href="{% get_media_prefix %}{{product.quality_certificate}}"
+                           class="item__doc_link yellow" target="_blank" title="сертификат качества">СК</a>
+                        {% endif%}
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </div>
         </li>
         {% endfor %}
     </ul>
     {% endif %}
     {% endif %}
+    <div class="popup_packing_edit packing_edit"></div>
 
 </div>
 {% endblock %}

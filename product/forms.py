@@ -32,11 +32,19 @@ class ProductForm(ModelForm):
 class ProductPackingForm(forms.ModelForm):
     class Meta:
         model = ProductPackagingModel
-        fields = ('packing', 'netto', 'brutto', 'quantity_box',)
+        fields = ('packing_name', 'netto', 'brutto', 'quantity_box',)
         widgets = {
-            'packing': forms.TextInput(),
-            'netto': forms.NumberInput(),
-            'brutto':forms.NumberInput(),
-            'quantity_box': forms.NumberInput()
+            'packing_name': forms.TextInput(),
+            'netto': forms.NumberInput(attrs={'placeholder':'20'}),
+            'brutto':forms.NumberInput(attrs={'placeholder':'20.4'}),
+            'quantity_box': forms.NumberInput(attrs={'placeholder':'48'})
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        netto = cleaned_data.get("netto")
+        brutto = cleaned_data.get("brutto")
+        if netto >= brutto:
+            msg = "масса брутто должна быть больше массы нетто"
+            self.add_error('brutto', msg)
 

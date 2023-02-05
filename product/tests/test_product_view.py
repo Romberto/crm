@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from product.forms import ProductForm
-from product.models import GroupProductModel, ProductModel
+from product.models import GroupProductModel, ProductModel, ProductPackagingModel
 from users.models import Profile
 import json
 
@@ -274,12 +274,13 @@ class TestProductItem(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
 
-    def test_edit_product_view_post(self):
+    def test_edit_product_view_product_post(self):
         url = reverse('edit_product', kwargs={'id': self.product.id})
         self.client.force_login(self.admin)
         data = {'article': '33500',
                 'product_name': 'провансаль',
-                'product_group': self.groupe.id
+                'product_group': self.groupe.id,
+                'product':True
                 }
         response = self.client.post(url, data=data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -287,6 +288,50 @@ class TestProductItem(TestCase):
         self.assertTemplateUsed(response, 'product/product_list.html')
         product = ProductModel.objects.get(id=self.product.id)
         self.assertEqual(product.article, '33500')
+
+    def test_edit_product_view_packing_post(self):
+        url = reverse('edit_product', kwargs={'id': self.product.id})
+        self.client.force_login(self.admin)
+        data = {'packing_name': 'тарра',
+                'netto': 13.6,
+                'brutto': 14.2,
+                'quantity_box': 40,
+                'packing':True
+                }
+        response = self.client.post(url, data=data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ProductPackagingModel.objects.count(), 1)
+        obj= ProductPackagingModel.objects.get(id=1)
+        self.assertEqual(obj.pallet_weight_netto, 544)
+        self.assertEqual(obj.pallet_weight_brutto, 568)
+        self.assertTemplateUsed(response, 'product/product_list.html')
+        self.assertRedirects(response, '/product/' + str(self.product.product_group.id))
+
+    def test_edit_product_view_packing_post_error(self):
+        expend_data = {'brutto': ['масса брутто должна быть больше массы нетто']}
+        url = reverse('edit_product', kwargs={'id': self.product.id})
+        self.client.force_login(self.admin)
+        data = {'packing_name': 'тарра',
+                'netto': 13.6,
+                'brutto': 13,
+                'quantity_box': 40,
+                'packing': True
+                }
+        response = self.client.post(url, data=data, follow=True)
+        self.assertEqual(response.context['form_packing'].errors, expend_data)
+
+    def test_edit_product_view_packing_post_error_equal(self):
+        expend_data = {'brutto': ['масса брутто должна быть больше массы нетто']}
+        url = reverse('edit_product', kwargs={'id': self.product.id})
+        self.client.force_login(self.admin)
+        data = {'packing_name': 'тарра',
+                'netto': 13,
+                'brutto': 13,
+                'quantity_box': 40,
+                'packing': True
+                }
+        response = self.client.post(url, data=data, follow=True)
+        self.assertEqual(response.context['form_packing'].errors, expend_data)
 
 
     def test_delete_product_view_ajax(self):

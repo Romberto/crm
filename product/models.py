@@ -31,6 +31,8 @@ class ProductModel(models.Model):
                                      verbose_name='Спецификация продукта')
     quality_certificate = models.FileField(null=True, blank=True, upload_to=content_file_name,
                                            verbose_name='Сертификат качества')
+    packing = models.ForeignKey('ProductPackagingModel', verbose_name='спецификация упаковки', related_name='spe_packing',
+                                on_delete=models.CASCADE,null=True, blank=True)
 
     def __str__(self):
         return str(self.product_name)
@@ -41,24 +43,26 @@ class ProductModel(models.Model):
 
 
 class ProductPackagingModel(models.Model):
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, related_name='product')
-    packing = models.CharField(max_length=255, default='ящик из гофрированного картона',
+    product = models.CharField(max_length=255)
+    #todo добавить кол-во бутылок в коробке
+    packing_name = models.CharField(max_length=200,blank=True, null=True, default='ящик из гофрированного картона',
                                verbose_name='упаковка')  # упаковка
-    netto = models.DecimalField( max_digits=8,decimal_places = 2,
-        verbose_name='нетто масса товара в одной коробке')  # нетто масса товара в одной единице упаковки
-    brutto = models.DecimalField(max_digits=8,decimal_places = 2,
-        verbose_name='брутто масса одной коробки с товаром')  # брутто масса одной коробки с товаром
+    netto = models.DecimalField(max_digits=8, decimal_places=2,
+                                verbose_name='нетто масса товара (коробка/ведро)')  # нетто масса товара в одной единице упаковки
+    brutto = models.DecimalField(max_digits=8, decimal_places=2,
+                                 verbose_name='брутто масса (коробка/ведро)')  # брутто масса одной коробки с товаром
     quantity_box = models.PositiveIntegerField(
-        verbose_name='количество коробок на поддоне')  # количество коробок на поддоне
-    pallet_weight_netto = models.DecimalField(max_digits=8,decimal_places = 2, verbose_name='масса поддона нетто', blank=True, null=True)  # масса поддона нетто
-    pallet_weight_brutto = models.DecimalField(max_digits=8,decimal_places = 2,verbose_name='масса поддона брутто', blank=True, null=True)  # масса поддона брутто
-
+        verbose_name='количество (коробка/ведро) на поддоне')  # количество коробок на поддоне
+    pallet_weight_netto = models.DecimalField(max_digits=8, decimal_places=2, verbose_name='масса поддона нетто',
+                                              blank=True, null=True)  # масса поддона нетто
+    pallet_weight_brutto = models.DecimalField(max_digits=8, decimal_places=2, verbose_name='масса поддона брутто',
+                                               blank=True, null=True)  # масса поддона брутто
 
     def netto_sum(self):
         return self.quantity_box * self.netto
 
     def brutto_sum(self):
-        return  self.quantity_box * self.brutto
+        return self.quantity_box * self.brutto
 
     def save(self, *args, **kwargs):
         self.pallet_weight_netto = self.netto_sum()
@@ -66,8 +70,7 @@ class ProductPackagingModel(models.Model):
         super(ProductPackagingModel, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f"Упаковка : {self.product}"
-
+        return f"Упаковка {self.id}: {self.product}"
 
     class Meta:
         verbose_name = "Спецификация упаковки"

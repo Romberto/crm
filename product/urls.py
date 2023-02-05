@@ -10,6 +10,10 @@ urlpatterns = [
     path('product_group_delete/', views.delete_product_group, name='delete_product_group'),
     path('add_product/<int:id>',views.AddProductView.as_view(), name='add_product'),
     path('edit_product/<int:id>', views.EditProductView.as_view(), name='edit_product'),
-    path('product_delete/',views.delete_product, name='delete_product')
+    path('product_delete/',views.delete_product, name='delete_product'),
+    path('packing_edit_post/', views.packing_edit_post),
+    path('packing_edit/', views.packing_edit_get),
+    path('packing/', views.pruduct_packing),
+
 
 ]

@@ -8,6 +8,7 @@ window.addEventListener('load', function(){
         $('#popup_edit').val(text)
         $('#popup_edit').attr("data-value", id)
         $('.popup_erorrs').html('')
+        $('html, body').animate({scrollTop: 0}, 600);
         $('.popup_edit_group').fadeIn()
     });
 // скрыть попап для изменения названия группы продуктов
@@ -44,6 +45,7 @@ window.addEventListener('load', function(){
         alert('Внимание удалив группу , вы удалите все продукты входящие в эту группу.')
         var id = $(this).attr('data-value')
         var text = $('#droup_'+id).text()
+        $('html, body').animate({scrollTop: 0}, 600);
         $('.popup_delete_group').fadeIn()
         $('#name_group').html(text)
         $('#popup__btn_delete_yes').attr('data-value', id)
@@ -51,7 +53,7 @@ window.addEventListener('load', function(){
 
 // скрыть попап для удаление группы продуктов
         $(document).mouseup(function (e) {
-            var container = $(".popup_delete_group, .popup_delete_product");
+            var container = $(".popup_delete_group, .popup_delete_product, .popup_packing_edit");
             if (container.has(e.target).length === 0){
                 container.fadeOut();
             }
@@ -89,6 +91,7 @@ window.addEventListener('load', function(){
             $('#popup__btn_product_delete_yes').attr('data-value', id)
             var article = $('#product_'+id).text()
             $('#name_group').text(article)
+            $('html, body').animate({scrollTop: 0}, 600);
             $('.popup_delete_product').fadeIn()
         });
 
@@ -115,5 +118,63 @@ window.addEventListener('load', function(){
                 }
             })
         });
+// попап появляется для просмотра спецификации продукта
+
+    $('.js_packing_edit').on('click', function(e){
+        e.preventDefault()
+        var id_packing = $(this).attr('data-value')
+        $('html, body').animate({scrollTop: 0}, 600);
+        $('.popup_packing_edit').fadeIn()
+        $.ajax({
+            url: '/product/packing/',
+            method: 'get',
+            dataType: "html",
+            data: {id: id_packing},
+            success: function(response){
+
+                $('.popup_packing_edit').html(response)
+            }
+
+        });
+    });
+
+    // попап появляется для изменения спецификации продукта
+    $('.product').on('click','#packing_edit', function(e){
+        e.preventDefault()
+        var id_packing = $(this).attr('data-value')
+        $.ajax({
+            url: '/product/packing_edit/',
+            method: 'get',
+            dataType: "html",
+            data: {id: id_packing},
+            success: function(response){
+                $('.popup_packing_edit').html(response)
+            }
+        });
+    })
+
+    $('.product').on('click','#packing_edit_post', function(e){
+        e.preventDefault()
+        var id_packing = $(this).attr('data-value')
+        var packing_name = $(this).parent().find('#id_packing_name').val()
+        var netto = $(this).parent().find('#id_netto').val()
+        var brutto = $(this).parent().find('#id_brutto').val()
+        var quantity_box = $(this).parent().find('#id_quantity_box').val()
+            $.ajax({
+            url: '/product/packing_edit_post/',
+            method: 'get',
+            dataType: "json",
+            data: {id: id_packing, packing_name:packing_name, netto:netto, brutto:brutto, quantity_box:quantity_box},
+            success: function(response){
+                    if(response.error){
+                        $('.popup_erorrs').html(response.msg)
+                    }else{
+                        location.reload()
+                    }
+            }
+        });
+        });
+
+
 
 })

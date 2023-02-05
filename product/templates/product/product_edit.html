@@ -6,14 +6,25 @@
 {% block title%} добавить клиента {% endblock %}
 {% block content %}
 <div class="product">
-    {% if request.user.profile.position == 'DR' or request.user.profile.position == 'MD'%}
     <span class="line"></span>
-    <h1 class="main__title_18">изменить {{product.product_name}}</h1>
-    <form class="product__group_form" method="post" action="#" enctype="multipart/form-data">
-        {% csrf_token%}
-        {{form.as_p}}
-        <input type="submit" value="изменить продукт" name="product__group">
-    </form>
+    {% if request.user.profile.position == 'DR' or request.user.profile.position == 'MD'%}
+
+    <div class="product_edit_block">
+        <form class="product__group_form" method="post" action="#" enctype="multipart/form-data">
+            <h1 class="main__title_18">изменить продукт <i>{{product.product_name}}</i></h1>
+            {% csrf_token%}
+            {{form.as_p}}
+            <input type="submit" value="изменить продукт" name="product" class="form__btn_action">
+        </form>
+        <form class="product__group_form" method="post" action="#" enctype="multipart/form-data">
+            <h1 class="main__title_18">спецификация груза <i>{{product.product_name}}</i></h1>
+            {% csrf_token%}
+            {{form_packing.as_p}}
+            <input type="submit" value="сохранить" name="packing" class="form__btn_action">
+        </form>
+
+    </div>
+
     {% endif %}
 
 </div>

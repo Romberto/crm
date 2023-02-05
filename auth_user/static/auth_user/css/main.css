@@ -8,6 +8,15 @@
     --orange_light: #ffc757;
     --yellow:#ffd129 ;
     --pink: #fd7b7c;
+    --green:#0bda51 ;
+}
+
+.green{
+    background-color: var(--green);
+}
+
+.pink{
+    background-color: var(--pink);
 }
 
 .blue_light{
@@ -131,6 +140,11 @@
     color: var(--white);
     background: var(--blue);
     font-size: 20px;
+}
+
+.product__group_form{
+    width: 45%;
+    padding: 8px;
 }
 
 .red{
