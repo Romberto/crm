@@ -174,6 +174,16 @@ window.addEventListener('load', function(){
             }
         });
         });
+// подбор фона для группы товаров исходя из начала названия
+    var container = $('.product__group_link')
+    container.each(function(){
+        var text = $(this).text()
+        if(text.startsWith('СОЛ-ПРО')){
+            $(this).addClass('blue_light')
+        }else if(text.startsWith('РУС-АГРО')){
+            $(this).addClass('orange_light')
+        }
+    })
 
 
 

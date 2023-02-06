@@ -21,15 +21,15 @@ def auth_decoration(func):
 class AllClientsView(View):
     @auth_decoration
     def get(self, request):
-        if request.user.profile.position != "DR":
-            clients = ClientModel.objects.all().values('id',
-                                                       'face_contact',
-                                                       'name',
-                                                       'phone',
-                                                       'phone2',
-                                                       'phone3',
-                                                       ).order_by(
-                '-id')
+        if request.user.profile.position == "DR":
+            clients = ClientModel.objects.all().select_related('owner_manager').values('id',
+                                                                                       'face_contact',
+                                                                                       'name',
+                                                                                       'phone',
+                                                                                       'phone2',
+                                                                                       'phone3',
+                                                                                       'owner_manager__username'
+                                                                                       )
             if clients:
 
                 data = {

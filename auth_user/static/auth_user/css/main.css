@@ -126,6 +126,8 @@
     display: inline-block;
     border-bottom: 2px solid var(--blue);
     padding-bottom:3px;
+    padding-left: 6px;
+    border-left: 2px solid var(--blue);
 }
 
 .form__btn_action{

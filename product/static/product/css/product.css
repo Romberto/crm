@@ -73,16 +73,17 @@
 
 .product__group_list{
     display: flex;
-
     margin-bottom: 20px;
     flex-wrap: wrap;
-    justify-content: space-around;
 }
 
 .product__group_item{
     display: flex;
     margin-bottom: 12px;
     align-items: center;
+}
+.product__group_item:not(:last-child){
+    margin-right: 20px;
 }
 
 .product__group_link{

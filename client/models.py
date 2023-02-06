@@ -3,7 +3,7 @@ from django.db import models
 
 
 class ClientModel(models.Model):
-    owner_manager = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name='manager')# менеджер которому принадлежит контакт
+    owner_manager = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)# менеджер которому принадлежит контакт
     name = models.CharField(max_length=128)  # наименование клиента
     face_contact = models.CharField(max_length=200, null=True, blank=True)  # контанное лицо
     phone = models.CharField(max_length=20)  # телефон1
