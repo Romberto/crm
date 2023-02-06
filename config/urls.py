@@ -24,7 +24,8 @@ urlpatterns = [
     path('work/', include('work_place.urls')),
     path('client/', include('client.urls')),
     path('product/',include('product.urls')),
-    path('', include('auth_user.urls'))
+    path('', include('auth_user.urls')),
+    path('trade',include('trade.urls'))
 ]
 
 if settings.DEBUG:

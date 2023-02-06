@@ -251,7 +251,8 @@ class TestProductItem(TestCase):
         data = {
             'article': '33500',
             'product_name': 'провансаль',
-            'product_group': self.groupe.id
+            'product_group': self.groupe.id,
+            'product_type': 'T'
         }
         self.client.force_login(self.user)
         url = reverse('add_product', kwargs={'id': self.groupe.id})
@@ -278,6 +279,7 @@ class TestProductItem(TestCase):
         url = reverse('edit_product', kwargs={'id': self.product.id})
         self.client.force_login(self.admin)
         data = {'article': '33500',
+                'product_type':'T',
                 'product_name': 'провансаль',
                 'product_group': self.groupe.id,
                 'product':True

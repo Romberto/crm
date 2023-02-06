@@ -75,7 +75,8 @@
     display: flex;
 
     margin-bottom: 20px;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .product__group_item{

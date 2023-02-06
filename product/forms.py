@@ -29,6 +29,13 @@ class ProductForm(ModelForm):
             'price':forms.NumberInput()
 
         }
+    def clean(self):
+        cleaned_data = super().clean()
+        product_type = cleaned_data.get("product_type")
+
+        if product_type == 'N':
+            msg = "укажите тип тары продукта"
+            self.add_error('product_type', msg)
 
 class ProductPackingForm(forms.ModelForm):
     class Meta:
