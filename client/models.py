@@ -17,6 +17,7 @@ class ClientModel(models.Model):
     agreement = models.BooleanField(default=False)  # соглосование
     activity = models.TextField(blank=True, null=True)  # примечания (комментарии)
 
+
     class Meta:
         verbose_name = "клиент"
         verbose_name_plural = "клиенты"

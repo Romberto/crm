@@ -60,6 +60,7 @@ class ProductListView(View):
                                                                                                            'declaration',
                                                                                                            'protocol',
                                                                                                            'specification',
+                                                                                                           'product_type',
                                                                                                            'quality_certificate',
                                                                                                            'product_group__group_title',
                                                                                                            'packing')
@@ -193,6 +194,7 @@ class AddProductView(View):
             form.specification = form.cleaned_data['specification']
             form.quality_certificate = form.cleaned_data['quality_certificate']
             form.price = form.cleaned_data['price']
+            form.product_type = form.cleaned_data['product_type']
             el = form.save(commit=False)
             el.product_group = product_group
             el.save()
@@ -239,6 +241,7 @@ class EditProductView(View):
                 if form.cleaned_data['quality_certificate']:
                     product.quality_certificate = form.cleaned_data['quality_certificate']
                 product.price = form.cleaned_data['price']
+                product.product_type = form.cleaned_data['product_type']
                 product.save()
                 product_group_id = product.product_group.id
                 return redirect('product_list', product_group_id)

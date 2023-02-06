@@ -19,6 +19,14 @@ def content_file_name(instance, filename):
 
 
 class ProductModel(models.Model):
+    product_type_choice = (
+        ('T', 'продукт тарированный'),
+        ('W', "продукт весовой"),
+        ('S', 'продукт сыпучий'),
+        ('N', 'тип тары не указан не указан')
+
+    )
+
     article = models.CharField(max_length=20, verbose_name='Артикул')
     product_name = models.CharField(max_length=250, verbose_name='Наименование проукта')
     price = models.PositiveIntegerField(verbose_name="цена", null=True, blank=True)
@@ -33,6 +41,7 @@ class ProductModel(models.Model):
                                            verbose_name='Сертификат качества')
     packing = models.ForeignKey('ProductPackagingModel', verbose_name='спецификация упаковки', related_name='spe_packing',
                                 on_delete=models.CASCADE,null=True, blank=True)
+    product_type = models.CharField(max_length=20 , choices=product_type_choice, default='N', verbose_name='тип тары')
 
     def __str__(self):
         return str(self.product_name)

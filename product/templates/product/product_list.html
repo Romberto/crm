@@ -17,19 +17,34 @@
         {% for product in products %}
         <li class="product__group_item">
             <div class="product__group_item_link">
-                <p class="product__name">{{product.product_name}}</p>
-                <p class="product_article" id="product_{{product.id}}">{{product.article}}</p>
-                <p class="product_article">{{product.price}} руб.</p>
+                <p class="product__name"><b>наименование</b> : {{product.product_name}}</p>
+                <p class="product_article"><b>артикул</b> : {{product.article}}</p>
+
+                <p class="product_article">
+                    {% if product.product_type == 'T' %}
+                        <b>цена за бутылку или ведро</b>
+                    {% elif product.product_type == 'W'%}
+                        <b>цена за один килограм</b>
+                    {% elif product.product_type == 'S'%}
+                        <b>цена за одну тонну</b>
+                    {% else %}
+                        <b style="color: red;">ВНИМАНИЕ НЕ УКАЗАН ТИП ТАРЫ</b>
+                    {% endif%}
+                    : {{product.price}} руб.</p>
+
+
                 <ul class="product__document_list">
                     {% if product.packing %}
                     <li class="product__document_item">
                         <a href="#"
-                           class="item__doc_link green js_packing_edit" title="спецификация груза" data-value="{{product.packing}}">СГ</a>
+                           class="item__doc_link green js_packing_edit" title="спецификация груза"
+                           data-value="{{product.packing}}">СГ</a>
                     </li>
                     {% else %}
                     <li class="product__document_item">
                         <a href="#"
-                           class="item__doc_link red js_packing_create" title="спецификация груза отсутствует" data-value="{{product.id}}">СГ</a>
+                           class="item__doc_link red js_packing_create" title="спецификация груза отсутствует"
+                           data-value="{{product.id}}">СГ</a>
                     </li>
                     {% endif %}
 
@@ -122,12 +137,14 @@
                     {% if product.packing %}
                     <li class="product__document_item">
                         <a href="#"
-                           class="item__doc_link green js_packing_edit" title="спецификация груза" data-value="{{product.packing}}">СГ</a>
+                           class="item__doc_link green js_packing_edit" title="спецификация груза"
+                           data-value="{{product.packing}}">СГ</a>
                     </li>
                     {% else %}
                     <li class="product__document_item">
                         <a href="#"
-                           class="item__doc_link red js_packing_create" title="спецификация груза отсутствует" data-value="{{product.id}}">СГ</a>
+                           class="item__doc_link red js_packing_create" title="спецификация груза отсутствует"
+                           data-value="{{product.id}}">СГ</a>
                     </li>
                     {% endif %}
                     {% if product.declaration%}
