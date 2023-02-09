@@ -194,6 +194,7 @@ class AddProductView(View):
             form.specification = form.cleaned_data['specification']
             form.quality_certificate = form.cleaned_data['quality_certificate']
             form.price = form.cleaned_data['price']
+            form.weigth_netto = form.cleaned_data['weigth_netto']
             form.product_type = form.cleaned_data['product_type']
             el = form.save(commit=False)
             el.product_group = product_group
@@ -241,6 +242,7 @@ class EditProductView(View):
                 if form.cleaned_data['quality_certificate']:
                     product.quality_certificate = form.cleaned_data['quality_certificate']
                 product.price = form.cleaned_data['price']
+                product.weigth_netto = form.cleaned_data['weigth_netto']
                 product.product_type = form.cleaned_data['product_type']
                 product.save()
                 product_group_id = product.product_group.id
@@ -255,6 +257,7 @@ class EditProductView(View):
             if form_packing.is_valid():
                 new_packing = ProductPackagingModel.objects.create(
                     product = product.product_name,
+                    quantity_element_in = form_packing.cleaned_data['quantity_element_in'],
                     packing_name = form_packing.cleaned_data['packing_name'],
                     netto = form_packing.cleaned_data['netto'],
                     brutto = form_packing.cleaned_data['brutto'],

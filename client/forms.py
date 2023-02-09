@@ -10,7 +10,7 @@ class ClientForm(forms.ModelForm):
         fields = ['name', 'phone', 'phone2', 'phone3',
                   'face_contact', 'inn', 'fact_address',
                   'jurist_address', 'site', 'mail'
-            , 'activity', 'agreement']
+            , 'activity', 'agreement', 'trend_raf', 'trend_no_raf', 'trend_manez', 'trend_licetin']
 
 
     def __init__(self, *args, **kwargs):
@@ -56,6 +56,19 @@ class ClientForm(forms.ModelForm):
 
         self.fields['agreement'].label = "соглосование"
         self.fields['agreement'].widget.attrs['class'] = 'client__form_input'
+
+        self.fields['trend_raf'].label = "масло рафинорованное"
+        self.fields['trend_raf'].widget.attrs['class'] = 'form_trand'
+
+        self.fields['trend_no_raf'].label = "масло не рафинорованное"
+        self.fields['trend_no_raf'].widget.attrs['class'] = 'form_trand'
+
+        self.fields['trend_manez'].label = "майонез"
+        self.fields['trend_manez'].widget.attrs['class'] = 'form_trand'
+
+        self.fields['trend_licetin'].label = "лицетин"
+        self.fields['trend_licetin'].widget.attrs['class'] = 'form_trand'
+
 
     def clean(self):
         cleaned_data = super().clean()

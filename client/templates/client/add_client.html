@@ -11,10 +11,77 @@
     <a class="btn_add_group" href="{% url 'all_clients' %}">назад</a>
     <form class="product__group_form" method="post" action="#">
         {% csrf_token%}
-        {{form.as_p}}
-        {% if form.error %}
-        {{form.error}}
-        {% endif %}
+                    <div class="form__fields_block">
+                <div class="form__main_block">
+                    <p>
+                        <label for="id_name">{{form_client.name.label_tag}}</label>
+                        {{form_client.name}}
+                    </p>
+                    <p>
+                        <label for="id_phone">{{form_client.phone.label_tag}}</label>
+                        {{form_client.phone}}
+                    </p>
+                    <p>
+                        <label for="id_phone2">{{form_client.phone2.label_tag}}</label>
+                        {{form_client.phone2}}
+                    </p>
+                    <p>
+                        <label for="id_phone3">{{form_client.phone3.label_tag}}</label>
+                        {{form_client.phone3}}
+                    </p>
+                    <p>
+                        <label for="id_face_contact">{{form_client.face_contact.label_tag}}</label>
+                        {{form_client.face_contact}}
+                    </p>
+                    <p>
+                        <label for="id_inn">{{form_client.inn.label_tag}}</label>
+                        {{form_client.inn}}
+                    </p>
+                    <p>
+                        <label for="id_fact_address">{{form_client.fact_address.label_tag}}</label>
+                        {{form_client.fact_address}}
+                    </p>
+                    <p>
+                        <label for="id_jurist_address">{{form_client.jurist_address.label_tag}}</label>
+                        {{form_client.jurist_address}}
+                    </p>
+                    <p>
+                        <label for="id_site">{{form_client.site.label_tag}}</label>
+                        {{form_client.site}}
+                    </p>
+                    <p>
+                        <label for="id_mail">{{form_client.mail.label_tag}}</label>
+                        {{form_client.mail}}
+                    </p>
+                    <p>
+                        <label for="id_activity">{{form_client.activity.label_tag}}</label>
+                        {{form_client.activity}}
+                    </p>
+                    <p>
+                        <label for="id_agreement">{{form_client.agreement.label_tag}}</label>
+                        {{form_client.agreement}}
+                    </p>
+                </div>
+                <div class="form__trand_block">
+                    <p>интересы:</p>
+                    <p class="form__trand_row">
+                        <label for="id_trend_raf">{{form_client.trend_raf.label_tag}}</label>
+                        {{form_client.trend_raf}}
+                    </p>
+                    <p class="form__trand_row">
+                        <label for="id_trend_no_raf">{{form_client.trend_no_raf.label_tag}}</label>
+                        {{form_client.trend_no_raf}}
+                    </p>
+                    <p class="form__trand_row">
+                        <label for="id_trend_manez">{{form_client.trend_manez.label_tag}}</label>
+                        {{form_client.trend_manez}}
+                    </p>
+                    <p class="form__trand_row">
+                        <label for="id_trend_licetin">{{form_client.trend_licetin.label_tag}}</label>
+                        {{form_client.trend_licetin}}
+                    </p>
+                </div>
+            </div>
         <input type="submit" value="создать" name="client" class="form__btn_action">
     </form>
 </div>

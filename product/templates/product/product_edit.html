@@ -15,12 +15,15 @@
             {% csrf_token%}
             {{form.as_p}}
             <input type="submit" value="изменить продукт" name="product" class="form__btn_action">
+            <p class="#">цена указывается за бутылку(если это коробки с бутылками, например масло) или за ведро (если
+            продукт это майонез в вёдрах), если товар сыпучий или розлив - укажите цену за тонну.</p>
         </form>
         <form class="product__group_form" method="post" action="#" enctype="multipart/form-data">
             <h1 class="main__title_18">спецификация груза <i>{{product.product_name}}</i></h1>
             {% csrf_token%}
             {{form_packing.as_p}}
             <input type="submit" value="сохранить" name="packing" class="form__btn_action">
+            <p class="#">масса продукта указывается за коробку или ведро на поддоне, усли товар сыпучий то укажите фактический вес</p>
         </form>
 
     </div>

@@ -93,7 +93,7 @@ class ClientTestView(TestCase):
     def test_client_detail_view_post(self):
         url = reverse('detail_client', kwargs={'id_client': self.my_client.id})
 
-        self.client.force_login(User.objects.get_or_create(username='test')[0])
+        self.client.force_login(User.objects.get_or_create(username='testr')[0])
         data = {
             'client': True,
             'name': 'testClien',

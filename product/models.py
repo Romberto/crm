@@ -29,7 +29,8 @@ class ProductModel(models.Model):
 
     article = models.CharField(max_length=20, verbose_name='Артикул')
     product_name = models.CharField(max_length=250, verbose_name='Наименование проукта')
-    price = models.PositiveIntegerField(verbose_name="цена", null=True, blank=True)
+    price = models.DecimalField(verbose_name="цена", null=True, blank=True, max_digits=8, decimal_places=2)
+    weigth_netto = models.DecimalField(verbose_name="вес нетто", null=True, blank=True, max_digits=8, decimal_places=2)
     product_group = models.ForeignKey(GroupProductModel, on_delete=models.CASCADE, related_name='product_group',
                                       blank=True, null=True, verbose_name='Группа продукта')
     declaration = models.FileField(null=True, blank=True,
@@ -44,7 +45,7 @@ class ProductModel(models.Model):
     product_type = models.CharField(max_length=20 , choices=product_type_choice, default='N', verbose_name='тип тары')
 
     def __str__(self):
-        return str(self.product_name)
+        return f"{self.article}: {self.product_name}"
 
     class Meta:
         verbose_name = "продукт"
@@ -56,6 +57,7 @@ class ProductPackagingModel(models.Model):
     #todo добавить кол-во бутылок в коробке
     packing_name = models.CharField(max_length=200,blank=True, null=True, default='ящик из гофрированного картона',
                                verbose_name='упаковка')  # упаковка
+    quantity_element_in = models.PositiveIntegerField(default=1, blank=True, verbose_name="количество единиц в упакове")
     netto = models.DecimalField(max_digits=8, decimal_places=2,
                                 verbose_name='нетто масса товара (коробка/ведро)')  # нетто масса товара в одной единице упаковки
     brutto = models.DecimalField(max_digits=8, decimal_places=2,

@@ -8,10 +8,11 @@
 <div class="product">
 
     <h1 class="main_title">Товары группы {{product_group_title}}</h1>
+    <span class="line"></span>
     {% if request.user.profile.position == 'DR' or request.user.profile.position == 'MD'%}
     <a class="btn_add_group js_add_group" href="{% url 'add_product' product_groupe_id %}" id="product_{{group.id}}">добавить
         товар</a>
-    <span class="line"></span>
+
     {% if products %}
     <ul class="product__group_list">
         {% for product in products %}

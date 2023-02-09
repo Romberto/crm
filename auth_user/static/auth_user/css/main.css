@@ -9,6 +9,7 @@
     --yellow:#ffd129 ;
     --pink: #fd7b7c;
     --green:#0bda51 ;
+    --grey: #808080;
 }
 
 .green{
@@ -151,4 +152,9 @@
 
 .red{
     background: var(--red);
+}
+
+.title_h2{
+    color: var(--blue);
+    text-align: center;
 }

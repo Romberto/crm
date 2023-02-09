@@ -7,7 +7,7 @@
 {% block content %}
 <div class="client">
     <h1 class="main_title">Клиенты</h1>
-    <a class="btn_add_group js_add_group" href="{% url 'add_client' %}">добавить клиента</a>
+    <a class="btn_add_group js_add_group hvr-grow-shadow" href="{% url 'add_client' %}">добавить клиента</a>
     <span class="line"></span>
 
     {% if clients %}
@@ -26,7 +26,7 @@
 
         <tr class="client__item">
             <td>{{client.owner_manager__username}}</td>
-            <td> <a href="{% url 'detail_client' client.id %}" class="table__link" title="детальная информация о клинте">{{client.name}} </a></td>
+            <td> <a href="{% url 'detail_client' client.id %}" class="table__link_client_name hvr-pulse-grow" title="детальная информация о клинте">{{client.name}} </a></td>
             <td> {{client.face_contact}}</td>
             <td> <a href="tel:{{client.phone}}" class="table__link">{{client.phone}}</a></td>
             <td> <a href="tel:{{client.phone2}}" class="table__link">{{client.phone2}}</a></td>
@@ -48,7 +48,7 @@
 
         <tr class="client__item">
 
-            <td> <a href="{% url 'detail_client' client.id %}" class="table__link" title="детальная информация о клинте">{{client.name}} </a></td>
+            <td> <a href="{% url 'detail_client' client.id %}" class="table__link_client_name hvr-pulse-grow" title="детальная информация о клинте">{{client.name}} </a></td>
             <td> {{client.face_contact}}</td>
             <td> <a href="tel:{{client.phone}}" class="table__link">{{client.phone}}</a></td>
             <td> <a href="tel:{{client.phone2}}" class="table__link">{{client.phone2}}</a></td>

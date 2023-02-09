@@ -29,3 +29,18 @@
 .form__main_block{
     min-width: 80%;
 }
+
+.table__link_client_name{
+    border-bottom: 1px solid var(--blue);
+    color: var(--blue);
+
+}
+.form__trand_row{
+     display: flex;
+     justify-content: space-between;
+    padding-bottom: 3px;
+    padding-left: 4px;
+    border-bottom: 1px solid var(--blue);
+    border-left: 1px solid var(--blue);
+    margin-bottom: 3px;
+}

@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'Ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Saratov'
 
 USE_I18N = True
 
@@ -155,4 +155,4 @@ MEDIA_URL = os.path.join(BASE_DIR,  '/media/')
 #         }
 #     }
 # }
-#
+

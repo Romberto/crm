@@ -63,13 +63,28 @@
                         <label for="id_agreement">{{form_client.agreement.label_tag}}</label>
                         {{form_client.agreement}}
                     </p>
-
                 </div>
-                <div class="form__inter_block"></div>
+                <div class="form__trand_block">
+                    <p class="form__trand_row">
+                        <label for="id_trend_raf">{{form_client.trend_raf.label_tag}}</label>
+                        {{form_client.trend_raf}}
+                    </p>
+                    <p class="form__trand_row">
+                        <label for="id_trend_no_raf">{{form_client.trend_no_raf.label_tag}}</label>
+                        {{form_client.trend_no_raf}}
+                    </p>
+                    <p class="form__trand_row">
+                        <label for="id_trend_manez">{{form_client.trend_manez.label_tag}}</label>
+                        {{form_client.trend_manez}}
+                    </p>
+                    <p class="form__trand_row">
+                        <label for="id_trend_licetin">{{form_client.trend_licetin.label_tag}}</label>
+                        {{form_client.trend_licetin}}
+                    </p>
+                </div>
             </div>
 
 
-            <!--            {{form_client.as_p}}-->
             <input type="submit" value="изменить" name="client" class="form__btn_action">
             <a href="{% url 'delete_client' client.id %}" class="form__btn_action red js_delete_client">удалить</a>
         </form>

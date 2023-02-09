@@ -86,12 +86,7 @@ class DetailClientView(View):
             form = ClientForm(request.POST, instance=client_model)
             if form.is_valid():
                 form.save()
-                clients = ClientModel.objects.all().values('id', 'face_contact', 'name',
-                                                           'phone').order_by('-id')
-                data = {
-                    'clients': clients
-                }
-                return render(request, 'client/all_clients.html', data)
+                return redirect('all_clients')
             else:
                 data = {
                     'client': client_model,
@@ -107,7 +102,7 @@ class AddClientView(View):
     @auth_decoration
     def get(self, request):
         data = {
-            'form': ClientForm()
+            'form_client': ClientForm()
         }
         return render(request, 'client/add_client.html', data)
 

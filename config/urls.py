@@ -25,7 +25,7 @@ urlpatterns = [
     path('client/', include('client.urls')),
     path('product/',include('product.urls')),
     path('', include('auth_user.urls')),
-    path('trade',include('trade.urls'))
+    path('trade/',include('trade.urls'))
 ]
 
 if settings.DEBUG:

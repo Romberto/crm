@@ -16,6 +16,11 @@ class ClientModel(models.Model):
     site = models.CharField(max_length=50, blank=True, null=True)  # сайт
     agreement = models.BooleanField(default=False)  # соглосование
     activity = models.TextField(blank=True, null=True)  # примечания (комментарии)
+    # далее товарные направления интересные клиенту
+    trend_raf = models.BooleanField(default=False ,verbose_name="рафинированное масло") #
+    trend_no_raf = models.BooleanField(default=False ,verbose_name="не рафинированное масло") #
+    trend_manez = models.BooleanField(default=False ,verbose_name="майонез")#
+    trend_licetin = models.BooleanField(default=False ,verbose_name="лицетин")#
 
 
     class Meta:

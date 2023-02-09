@@ -295,6 +295,7 @@ class TestProductItem(TestCase):
         url = reverse('edit_product', kwargs={'id': self.product.id})
         self.client.force_login(self.admin)
         data = {'packing_name': 'тарра',
+                'quantity_element_in': 3,
                 'netto': 13.6,
                 'brutto': 14.2,
                 'quantity_box': 40,

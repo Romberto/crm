@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'auth_user/css/normilize.css'%}">
+    <link rel="stylesheet" href="{% static 'auth_user/css/hover-min.css'%}">
     <link rel="stylesheet" href="{% static 'auth_user/css/main.css'%}">
     {% block css %}
 
@@ -16,10 +17,11 @@
     <div class="container">
 {{request.user.username}}
         <menu class="menu">
-            <a class="menu__link" href="{% url 'work_place' %}">кабинет</a>
-            <a class="menu__link" href="{% url 'trade_all' %}">сделки</a>
-            <a class="menu__link" href="{% url 'all_clients' %}">клиенты</a>
-            <a class="menu__link" href="{% url 'products' %}">продукция</a>
+            <a class="menu__link hvr-curl-top-left" href="{% url 'work_place' %}">кабинет</a>
+            <a class="menu__link hvr-curl-top-left" href="{% url 'trade_all' %}">сделки</a>
+            <a class="menu__link hvr-curl-top-left" href="{% url 'all_clients' %}">клиенты</a>
+            <a class="menu__link hvr-curl-top-left" href="{% url 'products' %}">продукция</a>
+            <a class="menu__link hvr-curl-top-left" href="{% url 'logOut' %}">выход</a>
         </menu>
         {% block content %}
 

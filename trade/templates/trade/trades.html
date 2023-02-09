@@ -1,12 +1,39 @@
 {% extends 'auth_user/base.html' %}
 {% load static %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'client/css/client.css'%}">
+<link rel="stylesheet" href="{% static 'trade/css/trade.css'%}">
 {% endblock %}
 {% block title%} мои клиенты {% endblock %}
 {% block content %}
 <div class="trade">
+    <span class="line"></span>
+    <h1 class="main_title">все сделки</h1>
+    <a class="btn_add_group" href="{% url 'trade_add' %}">новая сделка</a>
+    {% if trades %}
+    <h1 class="main_title">активные сделки</h1>
+    <ul class="trade__active_list">
+        {% for trade in trades %}
+        {% if trade.is_active %}
+        <li class="trade__item">
+            <a class="trade__item_link" href="{% url 'trade_detail' trade.id %}">
+                <img src="{% static 'trade/img/triangle.svg'%}" class="trade__img"/>
+                <div class="trade_item_name">{{trade.client__name}}</div>
+                <div class="trade_item_list">
+                    <p class="trade_item-text">{{trade.create_date}}</p>
+                    <p class="trade_item-text">{{trade.manager__username }}</p>
+                    <p class="trade_item-text">{{trade.full_price}} руб.</p>
+                </div>
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <a class="btn_add_group" href="#">все завершённые сделки</a>
+
+    {% else %}
+    <p class="text_discription">сделок пока небыло</p>
+    {% endif %}
 
 </div>
-
+{{ trade.client__name|slice:"150" }}{% if trade.client__name|length > 150 %}...{% endif %}
 {% endblock %}

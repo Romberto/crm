@@ -18,7 +18,7 @@ class ProductGroupForm(ModelForm):
 class ProductForm(ModelForm):
     class Meta:
         model = ProductModel
-        fields = ('article', 'product_type','product_name','price','declaration', 'protocol', 'specification', 'quality_certificate')
+        fields = ('article', 'product_type','product_name','price','weigth_netto','declaration', 'protocol', 'specification', 'quality_certificate')
         widgets = {
             'article': forms.TextInput(attrs={'class': 'input__article', }),
             'product_name': forms.TextInput(attrs={'class': 'input__product_name'}),
@@ -26,7 +26,8 @@ class ProductForm(ModelForm):
             'protocol': forms.FileInput(),
             'specification': forms.FileInput(),
             'quality_certificate': forms.FileInput(),
-            'price':forms.NumberInput()
+            'price':forms.NumberInput(),
+            'weigth_netto': forms.NumberInput()
 
         }
     def clean(self):
@@ -40,9 +41,10 @@ class ProductForm(ModelForm):
 class ProductPackingForm(forms.ModelForm):
     class Meta:
         model = ProductPackagingModel
-        fields = ('packing_name', 'netto', 'brutto', 'quantity_box',)
+        fields = ('packing_name','quantity_element_in', 'netto', 'brutto', 'quantity_box',)
         widgets = {
             'packing_name': forms.TextInput(),
+            'quantity_element_in': forms.NumberInput(),
             'netto': forms.NumberInput(attrs={'placeholder':'20'}),
             'brutto':forms.NumberInput(attrs={'placeholder':'20.4'}),
             'quantity_box': forms.NumberInput(attrs={'placeholder':'48'})
