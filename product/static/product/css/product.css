@@ -128,7 +128,7 @@
 .product__document_item:not(:last-child){
     margin-right: 10px;
 }
-
+.popup_packing_create,
 .popup_packing_edit{
     padding: 3px 8px;
     width: 500px;
@@ -157,6 +157,7 @@
 .packing_center{
     display: block;
     margin: 7px auto;
+    cursor: pointer;
 }
 
 .packing_edit p {
@@ -171,4 +172,8 @@
 #id_brutto,
 #id_quantity_box{
     width: 90px;
+}
+
+#id_packing_name{
+    width: 200px;
 }

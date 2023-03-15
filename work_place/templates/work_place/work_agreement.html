@@ -1,0 +1,54 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'trade/css/trade.css'%}">
+<link rel="stylesheet" href="{% static 'work_place/css/work_place.css'%}">
+
+{% endblock %}
+{% block title%} соглавсование {% endblock %}
+{% block content %}
+<span class="line"></span>
+{% if request.user.profile.position == 'DR' %}
+<h1 class="main_title" data-value="{{id}}" id="trade_id">{{id}}</h1>
+<div class="work_table">
+    <table cellspacing="4" border="5" class="trade__table">
+        <tr>
+            <td>наименование продукции</td>
+            <td>цена</td>
+            <td>количество</td>
+            <td>стоимость</td>
+            <td>масса нето</td>
+        </tr>
+        {% for item in items_trade %}
+        <tr data-value="{{item.id}}">
+            <td><a href="{% url 'edit_product' item.product__id%}">{{item.product__product_name|slice:"18"}}</a>
+            </td>
+            <td class="trade_product_price">{{item.product__price}}</td>
+            <td class="trade_product_count js_product_count" data-value="{{item.id}}">
+                <a href="#">{{item.count}}</a>
+                <input type="number" name="count" value="{{item.count}}" data-value="{{item.id}}"
+                       class="tr_count" required>
+            </td>
+            <td>{{item.full_price_i}}</td>
+            <td>{{item.full_weigth_i}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    <div class="shtamp">
+        <img class="shtamp__img" src="{% static 'work_place/images/approved.png' %}"/>
+        <audio src="{% static 'work_place/images/floor_002_20016.mp3' %}" id="audio_stamp"></audio>
+    </div>
+</div>
+
+
+<p id="full_price"><b>общая стоимость: </b>{{trade__full_price}} руб.</p>
+<p id="full_weight"><b>общая масса нетто: </b>{{trade__full_weight}} кг.</p>
+
+<div class="compare_btn" id="compare_btn">одобрить</div>
+{% endif %}
+{% endblock %}
+{% block js %}
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+<script type="text/javascript" src="{% static 'work_place/js/work_plase.js' %}"></script>
+{% endblock %}

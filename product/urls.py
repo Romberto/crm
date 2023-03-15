@@ -14,6 +14,8 @@ urlpatterns = [
     path('packing_edit_post/', views.packing_edit_post),
     path('packing_edit/', views.packing_edit_get),
     path('packing/', views.pruduct_packing),
+    path('packing_add/', views.packing_add),
+    path('packing_create/',views.packing_create)
 
 
 

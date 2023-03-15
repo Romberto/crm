@@ -4,6 +4,7 @@ from django.views import View
 
 from client.forms import ClientForm
 from client.models import ClientModel
+from product.models import GroupProductModel
 
 
 def auth_decoration(func):
@@ -28,7 +29,8 @@ class AllClientsView(View):
                                                                                        'phone',
                                                                                        'phone2',
                                                                                        'phone3',
-                                                                                       'owner_manager__username'
+                                                                                       'owner_manager__username',
+                                                                                       'role'
                                                                                        )
             if clients:
 
@@ -41,12 +43,13 @@ class AllClientsView(View):
                 }
             return render(request, 'client/all_clients.html', data)
         else:
-            clients = ClientModel.objects.filter(owner_manager=request.user.id).values('id',
+            clients = ClientModel.objects.all().values('id',
                                                                                        'face_contact',
                                                                                        'name',
                                                                                        'phone',
                                                                                        'phone2',
                                                                                        'phone3',
+                                                                                       'role'
                                                                                        ).order_by(
                 '-id')
             if clients:
@@ -110,10 +113,14 @@ class AddClientView(View):
     def post(self, request):
         form = ClientForm(request.POST)
         if form.is_valid():
-            owner_manager = request.user
-
             name = form.cleaned_data['name']
-
+            role = form.cleaned_data['role']
+            if role == 'S':
+                if not GroupProductModel.objects.filter(group_title=name).exists():
+                    GroupProductModel.objects.create(
+                        group_title = name
+                    )
+            owner_manager = request.user
             phone = ''
             for i in form.cleaned_data['phone']:
                 if i == '+' or i.isdigit():
@@ -146,6 +153,7 @@ class AddClientView(View):
             agreement = form.cleaned_data['agreement']
 
             new_client = ClientModel(
+                role=role,
                 owner_manager=owner_manager,
                 name=name,
                 phone=phone,
@@ -162,10 +170,8 @@ class AddClientView(View):
             )
             new_client.save()
             return redirect('all_clients')
-
         else:
-
-            return render(request, 'client/add_client.html', {'form': form})
+            return render(request, 'client/add_client.html', {'form_client': form})
 
 
 class ClientDeleteView(View):

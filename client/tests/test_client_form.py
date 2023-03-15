@@ -21,23 +21,22 @@ class ClientTestForm(TestCase):
 
         )
 
-
     def test_add_form_valid(self):
         url = reverse('add_client')
-        data = {'owner_manager':self.user1.id,
-                'name':'name',
-                'phone':'+79080230505',
-                'phone2':'+79080230505',
-                'phone3':'+79080230505',
-                'mail':'test@mail.ru',
-                'inn':'123456789123',
+        data = {'owner_manager': self.user1.id,
+                'role': 'P',
+                'name': 'name',
+                'phone': '+79080230505',
+                'phone2': '+79080230505',
+                'phone3': '+79080230505',
+                'mail': 'test@mail.ru',
+                'inn': '123456789123',
                 'fact_address ': 'fact_address',
                 'jurist_address ': 'jurist_address',
-                'activity':'blalbalva',
-                'face_contact':'face_contact',
-                'site':'https://site.ru',
-                'agreement':True,}
-
+                'activity': 'blalbalva',
+                'face_contact': 'face_contact',
+                'site': 'https://site.ru',
+                'agreement': True, }
 
         self.client.force_login(User.objects.get_or_create(username='test1')[0])
         form = ClientForm(data)
@@ -49,24 +48,22 @@ class ClientTestForm(TestCase):
         self.assertTemplateUsed(response, 'client/all_clients.html')
         self.assertEqual(1, client_count)
 
-
     def test_add_form_no_valid_phone(self):
-
-        data = {'owner_manager': self.user1.id, 'name':'testClien', 'phone': '89030251212'}
+        data = {'owner_manager': self.user1.id, 'name': 'testClien', 'phone': '89030251212'}
         form = ClientForm(data)
         self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['phone'][0], 'запишите номер телефона через +7')
         url = reverse('add_client')
         self.client.force_login(User.objects.get_or_create(username='test1')[0])
         response = self.client.post(url, data=data, follow=True)
-        self.assertFormError(response ,'form','phone','запишите номер телефона через +7')
-        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.status_code, 200)
 
     def test_add_form_no_valid_inn(self):
-        data = {'owner_manager': self.user1.id, 'name': 'testClien', 'phone': '+72392562128', 'inn':'123'}
+        data = {'owner_manager': self.user1.id, 'name': 'testClien', 'phone': '+72392562128', 'inn': '123'}
         form = ClientForm(data)
         self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['inn'][0], 'не коректный ИНН')
         url = reverse('add_client')
         self.client.force_login(User.objects.get_or_create(username='test1')[0])
         response = self.client.post(url, data=data, follow=True)
-        self.assertFormError(response ,'form','inn','не коректный ИНН')
-        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.status_code, 200)

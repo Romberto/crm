@@ -1,0 +1,27 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'trade/css/trade.css'%}">
+{% endblock %}
+{% block title%} мои клиенты {% endblock %}
+{% block content %}
+<div class="trade">
+    <span class="line"></span>
+    <h1 class="main_title">новая сделка</h1>
+    <a class="btn_add_group" href="{% url 'trade_all' %}">назад</a>
+    <div class="trade_block">
+        <form method="post" action="#" enctype="multipart/form-data" class="product__group_form">
+            {% csrf_token%}
+            {{form_trade.as_p}}
+            <input type="submit" value="создать сделку" name="create_trade" class="form__btn_action">
+        </form>
+        <div class="text_discription">
+            <p>С помощью этой формы вы можете создать сделку, указав начальные данные, такие как
+                клиент и если есть документ спецификация сделки, прикрепить его к ней.</p>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}

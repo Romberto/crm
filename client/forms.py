@@ -7,7 +7,7 @@ from .models import ClientModel
 class ClientForm(forms.ModelForm):
     class Meta:
         model = ClientModel
-        fields = ['name', 'phone', 'phone2', 'phone3',
+        fields = ['role','name', 'phone', 'phone2', 'phone3',
                   'face_contact', 'inn', 'fact_address',
                   'jurist_address', 'site', 'mail'
             , 'activity', 'agreement', 'trend_raf', 'trend_no_raf', 'trend_manez', 'trend_licetin']
@@ -15,6 +15,9 @@ class ClientForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
+        self.fields['role'].label = "покупатель/продавец"
+        self.fields['role'].widget.attrs['class'] = 'client__form_input'
+
         self.fields['name'].label = "название юр лица"
         self.fields['name'].widget.attrs['class'] = 'client__form_input'
 

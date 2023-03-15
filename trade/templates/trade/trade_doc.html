@@ -1,0 +1,13 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'trade/css/trade.css'%}">
+{% endblock %}
+{% block title%} мои клиенты {% endblock %}
+{% block content %}
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+<script type="text/javascript" src="{% static 'trade/js/trade.js' %}"></script>
+{% endblock%}

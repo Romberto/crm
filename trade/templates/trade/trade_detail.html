@@ -1,0 +1,226 @@
+{% extends 'auth_user/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'trade/css/trade.css'%}">
+{% endblock %}
+{% block title%} сделка {% endblock %}
+{% block content %}
+<div class="trade">
+    <span class="line"></span>
+    <h1 class="main_title" id="trade_id" data-value="{{id}}">{{id}}</h1>
+    <a class="btn_add_group" href="{% url 'trade_all' %}">назад</a>
+    <span class="line"></span>
+    <div class="trade_detail_list">
+        <div class="trade_detail_add_block">
+            <div class="trade_info_block">
+                <h2 class="title_h2">заявка покупателя</h2>
+                {% if query_trade %}
+                <table cellspacing="4" border="5" class="trade__table">
+                    <tr>
+                        <td>наименование продукции</td>
+                        <td>цена</td>
+                        <td>количество</td>
+                        <td>стоимость</td>
+                        <td>масса нето</td>
+                    </tr>
+                    {% for query in query_trade %}
+                    <tr data-value="{{query.id}}">
+                        <td><a href="{% url 'product_list' query.product__product_group_id %}">{{query.product__product_name|slice:"18"}}</a>
+                        </td>
+                        <td class="trade_product_price">{{query.logistic_price}}</td>
+                        <td class="trade_product_count js_product_count" data-value="{{query.id}}">
+                            <a href="#">{{query.count}}</a>
+                            <input type="number" name="count" value="{{query.count}}" data-value="{{query.id}}"
+                                   class="tr_count" required>
+                        </td>
+                        <td>{{query.full_price_i}}</td>
+                        <td>{{query.full_weigth_i}}</td>
+                    </tr>
+                    {% endfor %}
+
+                    {% else %}
+
+                    <p>заявка пока не сформирована</p>
+
+                    {% endif%}
+
+                </table>
+                <p class="value_error" style="color:red;"></p>
+                {% if trade__logistic %}
+                <p id="logistic" class="red"><b>добавленна логистика:</b>{{logistic_full}}</b></p>
+                {% endif %}
+                <p id="full_price"><b>общая стоимость: </b>{{trade__full_price}} руб.</p>
+                <p id="full_weight"><b>общая масса нетто: </b>{{trade__full_weight}} кг.</p>
+            </div>
+            {% if product__packing != 'T' %}
+            <div class="trade_form_block">
+                <form class="trade__form" method="post" action="#">
+                    {% csrf_token %}
+                    <div class="form_row">
+                        <div class="form_col form_width_one">
+                            <label for="id_product">{{form.product.label_tag}}</label>
+                            {{form.product}}{{form.product.error}}
+                        </div>
+                        <div class="form_col form_width_two">
+                            <label for="id_product">{{form.count.label_tag}}</label>
+                            {{form.count}}{{form.count.error}}
+                        </div>
+                    </div>
+                    <div class="form_row form_btn_float">
+                        <button type="submit" name="trade_btn" class="form__btn_action">добавить</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        <div class="trade_client_info">
+            <h2 class="title_h2">действия</h2>
+            {% if warning_list %}
+            <p class="warning_text">Продукты у которых отсутствует грузовая специализация:</p>
+            <ul class="warning_list">
+                {% for el in warning_list %}
+                <li class="warning_item">
+                    {% if request.user.profile.position == 'DR' or request.user.profile.position == 'MD' %}
+                    <a class="warning_link" href="{% url 'edit_product' el.product__id %}">{{el.product__product_name|slice:"20"}}</a>
+                    {% else %}
+                    <a class="warning_link" href="{% url 'product_list' el.group_product_id %}">{{el.product__product_name|slice:"20"}}</a>
+                    {% endif %}
+                    <button class="warning_btn red" data-value="{{el.product__id}}">запрос</button>
+                </li>
+
+                {% endfor %}
+            </ul>
+            {% else%}
+            {% endif%}
+
+            <div class="trade__action_block">
+                <button class="trade__action_btn" id="trade__agent" data-value="{{id}}" title="заявка поставщику">
+                   <img class="trade__action_img" src="{% static 'trade/img/financial_document.svg' %}"/>
+               </button>
+                {% if query_trade %}
+                {% if trade__compare%}
+                <button class="trade__action_btn js_text_vision" id="trade__text" data-value="{{id}}" title="текст заявки">
+                    <img class="trade__action_img" src="{% static 'trade/img/texteditor.png' %}"/>
+                </button>
+                {% endif %}
+                <button class="trade__action_btn" id="trade__message" data-value="{{trade__client__id}}" title="сообщение клиенту">
+                    <img class="trade__action_img" src="{% static 'trade/img/whatsapp.svg' %}"/>
+                </button>
+                <button class="trade__action_btn" id="trade__logistic" data-value="{{id}}" title="добавить логистику в цену">
+                    <img class="trade__action_img" src="{% static 'trade/img/logistic.svg' %}"/>
+                </button>
+                <button class="trade__action_btn" id="trade__doc" data-value="{{id}}" title="документы сделки">
+                    <img class="trade__action_img" src="{% static 'trade/img/doc.png' %}"/>
+                </button>
+                {% if not trade__compare %}
+                    <p id="error_compare"> ВНИМАНИЕ !!!Цены не согласованы.</p>
+                {% endif %}
+                {% endif %}
+            </div>
+
+
+        </div>
+        <div class="trade_client_info">
+            <h2 class="title_h2">информация о клиенте</h2>
+            {% if trade_client %}
+            <p class="crm_text"><b>компания:</b><a href="{% url 'detail_client' trade__client__id %}">{{ trade_client }}</a>;</p>
+            {% if trade__client__face_contact %}
+            <p class="crm_text"><b>контакт:</b>{{ trade__client__face_contact }};</p>
+            {% endif %}
+            <p class="crm_text"><b>телефон:</b><a href="tel:{{trade__client__phone}}">{{ trade__client__phone }}</a>;
+            </p>
+            {% if trade__client__phone2 %}
+            <p class="crm_text"><b>телефон2:</b><a href="tel:{{trade__client__phone2}}">{{ trade__client__phone2 }}</a>;
+            </p>
+            {% endif %}
+            {% if trade__client__phone3 %}
+            <p class="crm_text"><b>телефон3:</b><a href="tel:{{trade__client__phone3}}">{{ trade__client__phone3 }}</a>;
+            </p>
+            {% endif %}
+            {% if trade__client__site %}
+            <p class="crm_text"><b>сайт:</b><a href="{{trade__client__site}}">{{ trade__client__site }}</a>;</p>
+            {% endif %}
+            {% if trade__client__mail %}
+            <p class="crm_text"><b>почта:</b><a href="mailto:{{trade__client__mail}}">{{ trade__client__mail }}</a>;</p>
+            {% endif %}
+            {% if trade__client__fact_address %}
+            <p class="crm_text"><b>факт адрес:</b>{{ trade__client__fact_address }};</p>
+            {% endif %}
+            {% if trade__client__jurist_address %}
+            <p class="crm_text"><b>юр адрес:</b>{{ trade__client__jurist_address }};</p>
+            {% endif %}
+            {% if trade__client__agreement %}
+            <p class="crm_text"><b>клиент:</b>согласован;</p>
+            {% endif %}
+            {% if trade__client__activity %}
+            <p class="crm_text"><b>примечания:</b>{{trade__client__activity}};</p>
+            {% endif %}
+
+
+            {% endif %}
+        </div>
+        <div class="trade_client_info width700" id="supplier">
+            <h2 class="title_h2">заявка поставщику</h2>
+            {% if supplier %}
+                <table cellspacing="4" border="5" class="trade__table">
+                    <tr>
+                        <td>наименование продукции</td>
+                        <td>цена</td>
+                        <td>количество</td>
+                        <td>стоимость</td>
+                        <td>масса нето</td>
+                        <td>дата поставки</td>
+                    </tr>
+                    {% for item in query_supplier %}
+                    <tr>
+                        <td>{{ item.product__product_name }}</td>
+                        <td data-value="{{item.id}}" >
+                            <a href="#" class="js_supplier_price">{{ item.price }}</a>
+                            <input type="number"  data-value="{{item.id}}"
+                                   class="supplier_price" required>
+                        </td>
+                        <td>
+                            <a href="#" class="js_supplier_count">{{ item.count }}</a>
+                            <input type="number" value="{{item.count}}" data-value="{{item.id}}"
+                                   class="supplier_count" required>
+                        </td>
+                        <td class="supplier_full_price">{{ item.supplier_full_price}}</td>
+                        <td class="supplier_full_weight">{{ item.supplier_full_weight}}</td>
+                        <td>
+
+                            <a href="#" class="js_supplier_date">{{ item.date_delivery }}</a>
+                            <input type="date"  data-value="{{item.id}}"
+                                   class="supplier_date" required>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            <button type="submit" name="trade_btn" class="form__btn_action" id="add_trade_agent" data-value="{{id}}">добавить позицию</button>
+            <p class="supplier_error"></p>
+            <p id="supplier_full_price"><b>Полная стоимость: </b> <span>{{ supplier_full_price }}</span> руб.</p>
+            <p id="supplier_full_weight"><b>Общий вес нетто: </b><span>{{supplier_full_weight}}</span>кг.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="trade_popup_inner" id="text_look">
+        <div class="trade_popup_wrapper"></div>
+        <div class="trade_popup" id="text_popup"></div>
+    </div>
+        <div class="trade_popup_inner" id="popup_message">
+        <div class="trade_popup_wrapper"></div>
+        <div class="trade_popup" id="popup_msg_text"></div>
+    </div>
+    </div>
+        <div class="trade_popup_inner " id="popup_agent">
+        <div class="trade_popup_wrapper"></div>
+        <div class="trade_popup" id="popup_agent_form"></div>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+<script type="text/javascript" src="{% static 'trade/js/trade.js' %}"></script>
+<script type="text/javascript" src="{% static 'trade/js/actions.js' %}"></script>
+<script type="text/javascript" src="{% static 'trade/js/supplier.js' %}"></script>
+{% endblock%}

@@ -249,14 +249,18 @@ class TestProductItem(TestCase):
 
     def test_add_product_view_post(self):
         data = {
+
             'article': '33500',
             'product_name': 'провансаль',
             'product_group': self.groupe.id,
-            'product_type': 'T'
+            'product_type': 'T',
+            'price': 23,
+            'weigth_netto': 12
         }
         self.client.force_login(self.user)
         url = reverse('add_product', kwargs={'id': self.groupe.id})
         response = self.client.post(url, data=data, follow=True)
+
         self.assertEqual(response.status_code, 200)
         count_product = ProductModel.objects.count()
         self.assertEqual(count_product, 2)
@@ -279,10 +283,12 @@ class TestProductItem(TestCase):
         url = reverse('edit_product', kwargs={'id': self.product.id})
         self.client.force_login(self.admin)
         data = {'article': '33500',
-                'product_type':'T',
                 'product_name': 'провансаль',
                 'product_group': self.groupe.id,
-                'product':True
+                'product_type': 'T',
+                'price': 23,
+                'weigth_netto': 12,
+                'product': True
                 }
         response = self.client.post(url, data=data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -294,7 +300,7 @@ class TestProductItem(TestCase):
     def test_edit_product_view_packing_post(self):
         url = reverse('edit_product', kwargs={'id': self.product.id})
         self.client.force_login(self.admin)
-        data = {'packing_name': 'тарра',
+        data = {'packing_name': 'AJ',
                 'quantity_element_in': 3,
                 'netto': 13.6,
                 'brutto': 14.2,
@@ -314,11 +320,12 @@ class TestProductItem(TestCase):
         expend_data = {'brutto': ['масса брутто должна быть больше массы нетто']}
         url = reverse('edit_product', kwargs={'id': self.product.id})
         self.client.force_login(self.admin)
-        data = {'packing_name': 'тарра',
+        data = {'packing_name': 'AJ',
                 'netto': 13.6,
                 'brutto': 13,
                 'quantity_box': 40,
-                'packing': True
+                'packing': True,
+                'quantity_element_in': 16
                 }
         response = self.client.post(url, data=data, follow=True)
         self.assertEqual(response.context['form_packing'].errors, expend_data)
@@ -327,10 +334,11 @@ class TestProductItem(TestCase):
         expend_data = {'brutto': ['масса брутто должна быть больше массы нетто']}
         url = reverse('edit_product', kwargs={'id': self.product.id})
         self.client.force_login(self.admin)
-        data = {'packing_name': 'тарра',
+        data = {'packing_name': 'AJ',
                 'netto': 13,
                 'brutto': 13,
                 'quantity_box': 40,
+                'quantity_element_in': 15,
                 'packing': True
                 }
         response = self.client.post(url, data=data, follow=True)

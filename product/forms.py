@@ -28,7 +28,6 @@ class ProductForm(ModelForm):
             'quality_certificate': forms.FileInput(),
             'price':forms.NumberInput(),
             'weigth_netto': forms.NumberInput()
-
         }
     def clean(self):
         cleaned_data = super().clean()
@@ -43,7 +42,6 @@ class ProductPackingForm(forms.ModelForm):
         model = ProductPackagingModel
         fields = ('packing_name','quantity_element_in', 'netto', 'brutto', 'quantity_box',)
         widgets = {
-            'packing_name': forms.TextInput(),
             'quantity_element_in': forms.NumberInput(),
             'netto': forms.NumberInput(attrs={'placeholder':'20'}),
             'brutto':forms.NumberInput(attrs={'placeholder':'20.4'}),

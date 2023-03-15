@@ -22,15 +22,14 @@ class ProductModel(models.Model):
     product_type_choice = (
         ('T', 'продукт тарированный'),
         ('W', "продукт весовой"),
-        ('S', 'продукт сыпучий'),
+        ('S', 'продукт сыпучий/налив'),
         ('N', 'тип тары не указан не указан')
-
     )
 
     article = models.CharField(max_length=20, verbose_name='Артикул')
     product_name = models.CharField(max_length=250, verbose_name='Наименование проукта')
-    price = models.DecimalField(verbose_name="цена", null=True, blank=True, max_digits=8, decimal_places=2)
-    weigth_netto = models.DecimalField(verbose_name="вес нетто", null=True, blank=True, max_digits=8, decimal_places=2)
+    price = models.DecimalField(verbose_name="цена", max_digits=8, decimal_places=2, default=0)
+    weigth_netto = models.DecimalField(verbose_name="вес нетто", max_digits=8, decimal_places=2, default=0)
     product_group = models.ForeignKey(GroupProductModel, on_delete=models.CASCADE, related_name='product_group',
                                       blank=True, null=True, verbose_name='Группа продукта')
     declaration = models.FileField(null=True, blank=True,
@@ -41,7 +40,7 @@ class ProductModel(models.Model):
     quality_certificate = models.FileField(null=True, blank=True, upload_to=content_file_name,
                                            verbose_name='Сертификат качества')
     packing = models.ForeignKey('ProductPackagingModel', verbose_name='спецификация упаковки', related_name='spe_packing',
-                                on_delete=models.CASCADE,null=True, blank=True)
+                                on_delete=models.SET_NULL,null=True, blank=True)
     product_type = models.CharField(max_length=20 , choices=product_type_choice, default='N', verbose_name='тип тары')
 
     def __str__(self):
@@ -53,11 +52,17 @@ class ProductModel(models.Model):
 
 
 class ProductPackagingModel(models.Model):
+    CHOICE = (
+        ('AJ', 'ящик из гофрированного картона'),
+        ('K', 'канистра'),
+        ('P', 'пластиковое ведро с крышкой'),
+        ('T', 'сыпучий товар/розлив')
+    )
     product = models.CharField(max_length=255)
     #todo добавить кол-во бутылок в коробке
-    packing_name = models.CharField(max_length=200,blank=True, null=True, default='ящик из гофрированного картона',
+    packing_name = models.CharField(max_length=40, choices=CHOICE,  default='AJ',
                                verbose_name='упаковка')  # упаковка
-    quantity_element_in = models.PositiveIntegerField(default=1, blank=True, verbose_name="количество единиц в упакове")
+    quantity_element_in = models.PositiveIntegerField(default=1,verbose_name="количество единиц в упакове")
     netto = models.DecimalField(max_digits=8, decimal_places=2,
                                 verbose_name='нетто масса товара (коробка/ведро)')  # нетто масса товара в одной единице упаковки
     brutto = models.DecimalField(max_digits=8, decimal_places=2,

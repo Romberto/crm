@@ -1,0 +1,45 @@
+.work_place__position{
+    position: relative;
+}
+.position__director_list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.position__director_item{
+    min-width: 350px;
+    outline: 2px solid;
+    padding: 5px;
+}
+
+.compare__item{
+    display: flex;
+}
+.compare__manager{
+    width: 100px;
+}
+.compare_btn{
+    cursor: pointer;
+    width: 100px;
+    height: 40px;
+    border: 2px solid var(--blue);
+    border-radius: 5px;
+    padding-top: 8px;
+    text-align: center;
+
+}
+.work_table{
+    position: relative;
+    width: 700px;
+}
+.shtamp{
+    position: absolute;
+    top: 0;
+    right: 0;
+
+}
+.shtamp__img{
+    width: 150px;
+}

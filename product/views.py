@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 
+from client.models import ClientModel
 from client.views import auth_decoration
 from product.forms import ProductGroupForm, ProductForm, ProductPackingForm
 from product.models import GroupProductModel, ProductModel, ProductPackagingModel
@@ -109,6 +110,9 @@ def delete_product_group(request):
         id = request.GET.get('id')
         try:
             group = GroupProductModel.objects.get(id=id)
+            client = ClientModel.objects.filter(name=group.group_title).first()
+            if client:
+                client.delete()
             group.delete()
             data = {
                 'error': False
@@ -194,18 +198,41 @@ class AddProductView(View):
             form.specification = form.cleaned_data['specification']
             form.quality_certificate = form.cleaned_data['quality_certificate']
             form.price = form.cleaned_data['price']
-            form.weigth_netto = form.cleaned_data['weigth_netto']
-            form.product_type = form.cleaned_data['product_type']
-            el = form.save(commit=False)
-            el.product_group = product_group
-            el.save()
+            print(form.cleaned_data['product_type'])
+            if form.cleaned_data['product_type'] == 'S':
+                print('8'*50)
+
+                form.product_type = form.cleaned_data['product_type']
+                el = form.save(commit=False)
+                el.weigth_netto = 1000
+                el.product_group = product_group
+                el.save()
+                packing = ProductPackagingModel.objects.create(
+                    product = form.cleaned_data['product_name'],
+                    packing_name = 'T',
+                    quantity_element_in = 1,
+                    netto = 1000,
+                    brutto = 1,
+                    quantity_box = 1
+                )
+
+                el.packing = packing
+                el.save(update_fields=['packing'])
+            else:
+                form.weigth_netto = form.cleaned_data['weigth_netto']
+                form.product_type = form.cleaned_data['product_type']
+                el = form.save(commit=False)
+                el.product_group = product_group
+                el.save()
+
             return redirect('product_list', id)
 
-        group_product = GroupProductModel.objects.get(id=id)
-        data = {
-            'form': form,
-            'group_product': group_product.group_title
-        }
+        else:
+            group_product = GroupProductModel.objects.get(id=id)
+            data = {
+                'form': form,
+                'group_product': group_product.group_title
+            }
         return render(request, 'product/product_add.html', data)
 
 
@@ -299,17 +326,25 @@ def pruduct_packing(request):
         packing_name = obj.packing_name
         netto = obj.netto
         brutto = obj.brutto
+        quantity_element_in = obj.quantity_element_in
         quantity_box = obj.quantity_box
         pallet_weight_netto = obj.pallet_weight_netto
         pallet_weight_brutto = obj.pallet_weight_brutto
+        pac = {
+        'AJ': 'ящик из гофрированного картона',
+        'K': 'канистра',
+        'P': 'пластиковое ведро с крышкой',
+        'T': 'сыпучий товар/розлив'
+        }
         data = f'<p class="popup_title_text">{product}</p>' \
-               f'<p class="popup_text">упаковка: {packing_name};</p>' \
+               f'<p class="popup_text">упаковка: {pac[packing_name]};</p>' \
                f'<p class="popup_text">масса нетто (кор/вед): {netto};</p>' \
+               f'<p class="popup_text">кол-во единиц в упакове: {quantity_element_in} шт.;</p>' \
                f'<p class="popup_text">масса брутто (кор/вед): {brutto};</p>' \
                f'<p class="popup_text">кол-во (кор/вед) на поддоне: {quantity_box};</p>' \
                f'<p class="popup_text">масса палета нетто: {pallet_weight_netto};</p>' \
                f'<p class="popup_text">масса палета брутто: {pallet_weight_brutto};</p>' \
-      #         f'<a href="#" id="packing_edit" class="btn_add_group packing_center" data-value="{id}">изменить</a>'
+               f'<a href="#" id="packing_edit" class="btn_add_group packing_center" data-value="{id}">изменить</a>'
         return HttpResponse(data)
     else:
         data = '<p>ошибка запроса пользователь не авторизован</p>'
@@ -352,3 +387,56 @@ def packing_edit_post(request):
             'error': True
         }
         return JsonResponse(data)
+
+
+def packing_add(request):
+    id = request.GET.get('id')
+    product = ProductModel.objects.get(id=id)
+    form = ProductPackingForm()
+    msg=f'<p class="popup_title_text">{product.product_name}</p>' \
+        f'{form.as_p()}' \
+        f'<button id="packing_add_btn" class="btn_add_group packing_center" data-value={id}>создать</button>'
+    return HttpResponse(msg)
+
+def packing_create(request):
+    id_product = request.POST.get('id')
+    netto = request.POST.get('netto')
+    brutto = request.POST.get('brutto')
+    packing_name = request.POST.get('packing_name')
+    quantity_element_in = request.POST.get('quantity_element_in')
+    quantity_box = request.POST.get('quantity_box')
+    try:
+        product = ProductModel.objects.get(id=id_product)
+        if packing_name == 'T':
+            packing = ProductPackagingModel.objects.create(
+                packing_name = packing_name,
+                quantity_element_in = 1,
+                netto = 1,
+                brutto = 1,
+                quantity_box = 1
+            )
+        else:
+            packing = ProductPackagingModel.objects.create(
+                packing_name = packing_name,
+                quantity_element_in = int(quantity_element_in),
+                netto = float(netto),
+                brutto = float(brutto),
+                quantity_box = int(quantity_box)
+            )
+        product.packing = packing
+        product.save(update_fields=['packing'])
+        data = {
+            'error': False
+        }
+    except Exception as er:
+        print('*'*30)
+        print(er)
+        print('*' * 30)
+        data = {
+            'error': True,
+            'errot_text': 'пустое значение поля'
+
+        }
+
+    return JsonResponse(data)
+

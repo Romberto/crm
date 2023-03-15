@@ -33,7 +33,7 @@
                     {% endif%}
                     : {{product.price}} руб.</p>
 
-
+                <p class="packing__error"></p>
                 <ul class="product__document_list">
                     {% if product.packing %}
                     <li class="product__document_item">
@@ -133,7 +133,18 @@
             <div class="product__group_item_link">
                 <p class="product__name"><b>наименование</b> : {{product.product_name}}</p>
                 <p class="product_article"><b>артикул</b> : {{product.article}}</p>
-                <p class="product_article"><b>цена</b> : {{product.price}} руб.</p>
+                <p class="product_article">
+                    {% if product.product_type == 'T' %}
+                        <b>цена за бутылку или ведро</b>
+                    {% elif product.product_type == 'W'%}
+                        <b>цена за один килограм</b>
+                    {% elif product.product_type == 'S'%}
+                        <b>цена за одну тонну</b>
+                    {% else %}
+                        <b style="color: red;">ВНИМАНИЕ НЕ УКАЗАН ТИП ТАРЫ</b>
+                    {% endif%}
+                    : {{product.price}} руб.</p>
+                <p class="packing__error"></p>
                 <ul class="product__document_list">
                     {% if product.packing %}
                     <li class="product__document_item">
@@ -205,10 +216,13 @@
     </ul>
     {% endif %}
     {% endif %}
-    <div class="popup_packing_edit packing_edit"></div>
+    <div class="popup_packing_edit packing_edit">
+        <p class="packing__error"></p>
+    </div>
 
 </div>
 {% endblock %}
 {% block js %}
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
 <script type="text/javascript" src="{% static 'product/js/product.js' %}"></script>
 {% endblock %}

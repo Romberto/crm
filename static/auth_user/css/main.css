@@ -3,7 +3,41 @@
     --white: #fff;
     --black: #000000;
     --red: #fa0505;
-    --blue_light: ;
+    --blue_light:#ace7f2 ;
+    --green_light:#68f7cc ;
+    --orange_light: #ffc757;
+    --yellow:#ffd129 ;
+    --pink: #fd7b7c;
+    --green:#0bda51 ;
+    --grey: #808080;
+}
+
+.green{
+    background-color: var(--green);
+}
+
+.pink{
+    background-color: var(--pink);
+}
+
+.blue_light{
+    background-color: var(--blue_light);
+}
+
+.green_light{
+    background-color: var(--green_light);
+}
+
+.orange_light{
+    background-color: var(--orange_light);
+}
+
+.yellow{
+    background-color: var(--yellow);
+}
+
+.red{
+    background: var(--red)
 }
 
 .container{
@@ -97,11 +131,13 @@
     display: inline-block;
     border-bottom: 2px solid var(--blue);
     padding-bottom:3px;
+    padding-left: 6px;
+    border-left: 2px solid var(--blue);
 }
 
 .form__btn_action{
     border: 2px solid var(--black);
-
+    cursor: pointer;
     height: 40px;
     text-align:center;
     padding: 5px 10px 7px;
@@ -113,6 +149,16 @@
     font-size: 20px;
 }
 
+.product__group_form{
+    width: 45%;
+    padding: 8px;
+}
+
 .red{
     background: var(--red);
+}
+
+.title_h2{
+    color: var(--blue);
+    text-align: center;
 }

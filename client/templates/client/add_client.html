@@ -12,7 +12,13 @@
     <form class="product__group_form" method="post" action="#">
         {% csrf_token%}
                     <div class="form__fields_block">
+                        {{ form_client.errors }}
                 <div class="form__main_block">
+                    <p>
+                        <label for="id_role">{{form_client.role.label_tag}}</label>
+                        {{form_client.role}}
+                    </p>
+
                     <p>
                         <label for="id_name">{{form_client.name.label_tag}}</label>
                         {{form_client.name}}

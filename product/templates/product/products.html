@@ -15,9 +15,9 @@
         {% for group in groups %}
         <li class="product__group_item">
             <a class="product__group_link" href="{% url 'product_list' group.id %}" id="droup_{{group.id}}">{{group.group_title}}</a>
-            <a class="product__group_edit js_edit_group" href="#" data-value="{{group.id}}">
-                <img src="{% static 'product/img/pen.svg'%}" class="product__group_img" alt="карандаш" title="Поменять название группы"/>
-            </a>
+<!--            <a class="product__group_edit js_edit_group" href="#" data-value="{{group.id}}">-->
+<!--                <img src="{% static 'product/img/pen.svg'%}" class="product__group_img" alt="карандаш" title="Поменять название группы"/>-->
+<!--            </a>-->
             <a class="product__group_delete js_delete_group" href="#" data-value="{{group.id}}">
                 <img src="{% static 'product/img/cart.svg'%}" class="product__group_img" alt="корзина" title="Удалить группу"/>
             </a>

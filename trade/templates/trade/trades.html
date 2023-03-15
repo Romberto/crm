@@ -17,7 +17,7 @@
         <li class="trade__item">
             <a class="trade__item_link" href="{% url 'trade_detail' trade.id %}">
                 <img src="{% static 'trade/img/triangle.svg'%}" class="trade__img"/>
-                <div class="trade_item_name">{{trade.client__name}}</div>
+                <div class="trade_item_name">{{trade.id}} {{trade.client__name}}</div>
                 <div class="trade_item_list">
                     <p class="trade_item-text">{{trade.create_date}}</p>
                     <p class="trade_item-text">{{trade.manager__username }}</p>

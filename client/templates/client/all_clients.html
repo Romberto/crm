@@ -11,11 +11,12 @@
     <span class="line"></span>
 
     {% if clients %}
-    {% if request.user.profile.position == 'DR'%}
+    {% if request.user.profile.position == 'DR' or request.user.profile.position == 'MP'%}
     <h1 class="main_title">все клиетны</h1>
     <table class="client__list"  cellpadding="7" cellspacing="7">
         <tr bgcolor='#b3ffe5'>
             <td>менеджер</td>
+            <td>роль</td>
             <td>название компании</td>
             <td>контакнное лицо</td>
             <td>телефон</td>
@@ -26,6 +27,7 @@
 
         <tr class="client__item">
             <td>{{client.owner_manager__username}}</td>
+            <td>{% if client.role == 'P'%}покупатель{% else %} поставщик {% endif %}</td>
             <td> <a href="{% url 'detail_client' client.id %}" class="table__link_client_name hvr-pulse-grow" title="детальная информация о клинте">{{client.name}} </a></td>
             <td> {{client.face_contact}}</td>
             <td> <a href="tel:{{client.phone}}" class="table__link">{{client.phone}}</a></td>

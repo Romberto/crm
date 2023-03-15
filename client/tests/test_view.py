@@ -26,7 +26,8 @@ class ClientTestView(TestCase):
         self.my_client = ClientModel.objects.create(
             owner_manager=self.user_test,
             name='testClien',
-            phone='8379035485215'
+            phone='8379035485215',
+            role = 'P'
         )
         self.profile = Profile.objects.create(
             user=self.user,
@@ -67,6 +68,7 @@ class ClientTestView(TestCase):
                                                                                             'phone',
                                                                                             'phone2',
                                                                                             'phone3',
+                                                                                               'role'
                                                                                             ).order_by(
             '-id')
         self.assertQuerysetEqual(response.context[0]['clients'], expected_response)
@@ -97,7 +99,8 @@ class ClientTestView(TestCase):
         data = {
             'client': True,
             'name': 'testClien',
-            'phone': '+79050520605'
+            'phone': '+79050520605',
+            'role': 'P'
         }
 
         response = self.client.post(url, data=data, follow=True)

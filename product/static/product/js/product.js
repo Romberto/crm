@@ -124,6 +124,7 @@ window.addEventListener('load', function(){
         e.preventDefault()
         var id_packing = $(this).attr('data-value')
         $('html, body').animate({scrollTop: 0}, 600);
+        $('.popup_packing_edit').html('')
         $('.popup_packing_edit').fadeIn()
         $.ajax({
             url: '/product/packing/',
@@ -185,6 +186,51 @@ window.addEventListener('load', function(){
         }
     })
 
+    $('.js_packing_create').on('click', function(e){
+        e.preventDefault()
+        var id_product = $(this).attr('data-value')
+        $('.popup_packing_edit').html('')
+        $('.popup_packing_edit').fadeIn()
+        $.ajax({
+            url: '/product/packing_add/',
+            method: 'get',
+            dataType: "html",
+            data: {id: id_product},
+            success: function(response){
+                $('.popup_packing_edit').html(response)
+            }
+        });
 
+    })
+
+    $('.product').on('click', '#packing_add_btn', function(e){
+        var packing_name = $('#id_packing_name').val()
+        var quantity_element_in = $('#id_quantity_element_in').val()
+        var netto = $('#id_netto').val()
+        var brutto = $('#id_brutto').val()
+        var quantity_box = $('#id_quantity_box').val()
+        var id = $(this).attr('data-value')
+        $.ajax({
+            url:'/product/packing_create/',
+            method: 'post',
+            dataType: "json",
+            data: {id: id, packing_name:packing_name, quantity_box:quantity_box, quantity_element_in:quantity_element_in, netto:netto, brutto:brutto, csrfmiddlewaretoken: window.CSRF_TOKEN},
+            success: function(response){
+                if(response.error){
+                $.find('.packing__error').each(function(){
+
+                })
+                $('.packing__error').html(response.text_error)
+                }else{
+                $('.popup_packing_edit').html('')
+                $('.popup_packing_edit').fadeOut()
+                location.reload();
+                   }
+            },
+
+
+        })
+
+    })
 
 })

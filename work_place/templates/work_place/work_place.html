@@ -8,6 +8,45 @@
 {% if request.user.profile %}
 <div class="work_place">
     <span class="line"></span>
+    {% if request.user.profile.position == 'DR' %}
+    <div class="work_place__position">
+        <ul class="position__director_list">
+            <li class="position__director_item">
+                <h2 class="title_h2">Запросы на соглосование</h2>
+                <ul class="compare__list">
+                    {% for trade in trades %}
+                    {% if trade.compare == False %}
+                    <li class="compare__item">
+
+                        <p class="compare__manager">{{trade.manager__username}}</p>
+                        <a href="{% url 'work_agreement' trade.id %}" class="compare__link">{{trade.id}} {{trade.client__name}}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="position__director_item">
+                <h2 class="title_h2">Активные сделки менеджеров</h2>
+                <ul class="compare__list">
+                    {% for trade in trades %}
+                    <li class="compare__item">
+                        <p class="compare__manager">{{trade.manager__username}}</p>
+                        <a href="#" class="compare__link">{{trade.id}} Kirill&co</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+    {% elif request.user.profile.position == 'MD' %}
+    <div class="work_place__position">
+
+    </div>
+    {% elif request.user.profile.position == 'MP' %}
+    <div class="work_place__position">
+
+    </div>
+    {% endif %}
 
 </div>
 {% else %}
